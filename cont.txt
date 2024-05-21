@@ -1,0 +1,71 @@
+package com.recmain.recordmaintenance.controller;
+
+import com.recmain.recordmaintenance.entities.User;
+import com.recmain.recordmaintenance.service.UserService;
+import org.hibernate.engine.spi.Resolution;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * UserController
+ */
+@RestController
+@CrossOrigin("*")
+public class UserController {
+
+  @Autowired
+  public UserService userService;
+
+  @PostMapping("/register")
+  public ResponseEntity<?> register(@RequestBody User user) {
+    if (userService.getUserByE(user) == null) {
+      User u = userService.addUser(user);
+      // return ResponseEntity.ok(u.getEmail() + " Registered Successfully");
+      return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(u.getEmail() + " Registered Successfully");
+    } else {
+      System.out.println("Already Exists!");
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body("User Already Exists!");
+    }
+  }
+
+  // @PostMapping("/login")
+  // public String login(@RequestBody UserDto userDto) {
+  //   System.out.println("POSTED LOGIN" + userDto);
+  //   User user = this.modelMapper.map(userDto, User.class);
+  //   System.out.println(user);
+  //   return "login";
+  // }
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody User user) {
+    if (userService.getUserByEP(user) != null) {
+      return ResponseEntity.ok(" Welcome " + user.getEmail());
+    } else {
+      return ResponseEntity
+        .status(HttpStatus.UNAUTHORIZED)
+        .body("Invalid Credentials!");
+    }
+  }
+
+  @GetMapping("/reset-password")
+  public String resetPassword() {
+    System.out.println("reset-password");
+    return "reset-password";
+  }
+
+  @GetMapping("/forgot-password")
+  public String forgotPassword() {
+    System.out.println("forgot-password");
+    return "forgot-password";
+  }
+}

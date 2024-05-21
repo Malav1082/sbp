@@ -1,0 +1,36 @@
+package net.javaguides.ems.mapper;
+
+import net.javaguides.ems.dto.TblEmployeeMasterDto;
+import net.javaguides.ems.entity.TblEmployeeMaster;
+import net.javaguides.ems.entity.TblUserMaster;
+import net.javaguides.ems.repository.TblUserMasterRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class TblEmployeeMasterMapper {
+    
+    @Autowired
+    private TblUserMasterRepository userRepository;
+
+    public static TblEmployeeMasterDto mapToTblEmployeeMaster(TblEmployeeMaster tblEmployeeMaster) {
+         Mapping logic to map from TblEmployeeMaster entity to TblEmployeeMasterDto
+    }
+
+    public TblEmployeeMaster mapToTblEmployeeMaster(TblEmployeeMasterDto tblEmployeeMasterDto) {
+        TblEmployeeMaster employeeMaster = new TblEmployeeMaster();
+        employeeMaster.setMastCode(tblEmployeeMasterDto.getMastCode());
+        
+         Fetch the user from the database based on the userId
+        TblUserMaster user = userRepository.findById(tblEmployeeMasterDto.getUserId())
+                .orElseThrow(() - new ResourceNotFoundException(User with id  + tblEmployeeMasterDto.getUserId() +  not found));
+
+        employeeMaster.setUser(user);
+        
+        employeeMaster.setEmpID(tblEmployeeMasterDto.getEmpID());
+        employeeMaster.setEmpName(tblEmployeeMasterDto.getEmpName());
+        employeeMaster.setDesignation(tblEmployeeMasterDto.getDesignation());
+        employeeMaster.setDepartment(tblEmployeeMasterDto.getDepartment());
+        employeeMaster.setJoinedDate(tblEmployeeMasterDto.getJoinedDate());
+        employeeMaster.setSalary(tblEmployeeMasterDto.getSalary());
+        return employeeMaster;
+    }
+}
