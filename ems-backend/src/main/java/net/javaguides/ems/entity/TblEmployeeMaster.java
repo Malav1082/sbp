@@ -1,20 +1,9 @@
 package net.javaguides.ems.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Setter
@@ -23,7 +12,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @ToString
 @Table(name = "TblEmployeeMaster")
-@Component
 public class TblEmployeeMaster {
 
     @Id
@@ -32,13 +20,13 @@ public class TblEmployeeMaster {
     private long mastCode;
 
     @ManyToOne
-    @JoinColumn(name = "User Id")
+    @JoinColumn(name = "UserId")
     private TblUserMaster tblUserMaster;
 
     @Column(name = "EmpID", unique = true)
     private String empId;
 
-    @JoinColumn(name = "EmpName")
+    @Column(name = "EmpName")
     private String empName;
 
     @Column(name = "Designation")
@@ -47,7 +35,7 @@ public class TblEmployeeMaster {
     @Column(name = "Department")
     private String department;
 
-    @Column(name = "Joined Date")
+    @Column(name = "JoinedDate")
     private Date joinedDate;
 
     @Column(name = "Salary")

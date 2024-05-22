@@ -24,12 +24,11 @@ const Login = () => {
     try {
       const response = await postApi("/login", user, "Login Successful!", "Invalid Credentials");
       if (response && response.status === 200) {
-        console.log(response)
-        sessionStorage.setItem("user", JSON.stringify(response.data))
+        sessionStorage.setItem("user", JSON.stringify(response.data));
         setSuccessAlert(true);
         setTimeout(() => {
           setSuccessAlert(false);
-          navigate("/home");
+          navigate(`/home/${response.data.userid}`);
         }, 2000);
       } else {
         setErrorAlert(true);
@@ -44,23 +43,23 @@ const Login = () => {
 
   return (
     <Container style={{ width: '30%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px', marginTop: '7%' }}>
-      <h2 className="mt-4 mb-4" style={{textAlign: 'center'}}>Login</h2>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }}>Login</h2>
       {successAlert && <Alert color="success">Login Successful!</Alert>}
       {errorAlert && <Alert color="danger">Invalid User Name or Password</Alert>}
       <Form onSubmit={handleLogin}>
         <Row>
-          <Col md={9} style={{width:'100%'}}>
-            <FormGroup style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Col md={9} style={{ width: '100%' }}>
+            <FormGroup style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <Label for="name">User Name:</Label>
-              <Input type="text" id="name" name="name" onChange={handleInputChange} placeholder="Enter Your Name" style={{width:'75%'}}/>
+              <Input type="text" id="name" name="name" onChange={handleInputChange} placeholder="Enter Your Name" style={{ width: '75%' }} />
             </FormGroup>
           </Col>
         </Row>
         <Row>
-          <Col md={9} style={{width:'100%'}}>
-            <FormGroup style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Label for="password" style={{textWrap:'nowrap'}}>Password:</Label>
-              <Input type="password" id="password" name="password" onChange={handleInputChange} placeholder="Enter Your Password" style={{width:'75%'}}/>
+          <Col md={9} style={{ width: '100%' }}>
+            <FormGroup style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Label for="password" style={{ textWrap: 'nowrap' }}>Password:</Label>
+              <Input type="password" id="password" name="password" onChange={handleInputChange} placeholder="Enter Your Password" style={{ width: '75%' }} />
             </FormGroup>
           </Col>
         </Row>

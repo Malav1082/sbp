@@ -1,52 +1,52 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Container,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Col,
-  Row,
-} from "reactstrap";
-import { addEmployee } from "../services/api";
+import React, { useState } from "react";
+import { Button, Container, Form, FormGroup, Input, Label, Col, Row } from "reactstrap";
+import { addEmployee } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+
 const Add = () => {
-  const [employee, setEmployee] = useState();
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const [employee, setEmployee] = useState({
+    empId: "",
+    empName: "",
+    designation: "",
+    department: "",
+    joinedDate: "",
+    salary: "",
+    addr1: "",
+    addr2: "",
+    city: "",
+    state: "",
+    country: ""
+  });
+
+  const [user, setUser] = useState({});
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = "Add Employee";
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEmployee({ ...employee, [name]: value });
   };
 
-  const handleGoBack = () => {
-    window.history.back();
-    navigate(`/home/${user.userid}`);
-  };
-
   const handleAdd = async (e) => {
     e.preventDefault();
-    const data = {
-      user: user,
-      employee: employee,
-    };
-    console.log("e", employee);
-    const response = await addEmployee(`/home/${user.userid}/add`, data);
-    if (response.status === 201) {
-      sessionStorage.setItem("add", response.data);
-      navigate(`/home/${user.userid}`);
-    } else {
-      toast.error(response.response.data);
+    try {
+      const data = {
+        employee: employee,
+        user: JSON.parse(sessionStorage.getItem("user"))
+      }
+      console.log("Submitting employee data:", data); // Log the employee data
+      await addEmployee(data);
+      // const user = JSON.parse(sessionStorage.getItem("user"));
+      if (user && user.userid) {
+        navigate(`/home/${user.userid}`);
+      } else {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error adding employee:", error);
     }
   };
+
   return (
     <Container className="mt-5">
       <h1 className="text-center mb-4">Add Employee</h1>
@@ -61,6 +61,7 @@ const Add = () => {
                 id="empId"
                 placeholder="Enter EmpID"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -73,6 +74,7 @@ const Add = () => {
                 id="empName"
                 placeholder="Enter EmpName"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -87,6 +89,7 @@ const Add = () => {
                 id="designation"
                 placeholder="Enter Designation"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -99,6 +102,7 @@ const Add = () => {
                 id="department"
                 placeholder="Enter Department"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -112,6 +116,7 @@ const Add = () => {
                 name="joinedDate"
                 id="joinedDate"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -124,6 +129,7 @@ const Add = () => {
                 id="salary"
                 placeholder="Enter Salary"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -136,6 +142,7 @@ const Add = () => {
             id="addr1"
             placeholder="Enter AddressLine1"
             onChange={handleInputChange}
+            required
           />
         </FormGroup>
         <FormGroup>
@@ -146,6 +153,7 @@ const Add = () => {
             id="addr2"
             placeholder="Enter AddressLine2"
             onChange={handleInputChange}
+            required
           />
         </FormGroup>
         <Row>
@@ -158,6 +166,7 @@ const Add = () => {
                 id="city"
                 placeholder="Enter City"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -170,6 +179,7 @@ const Add = () => {
                 id="state"
                 placeholder="Enter State"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -182,6 +192,7 @@ const Add = () => {
                 id="country"
                 placeholder="Enter Country"
                 onChange={handleInputChange}
+                required
               />
             </FormGroup>
           </Col>
@@ -189,8 +200,18 @@ const Add = () => {
         <Button color="primary" type="submit">
           Add
         </Button>
-        <Button color="danger" onClick={handleGoBack}>
-          Home
+        <Button
+          color="danger"
+          onClick={() => {
+            const user = JSON.parse(sessionStorage.getItem("user"));
+            if (user && user.userid) {
+              navigate(`/home/${user.userid}`);
+            } else {
+              navigate("/login");
+            }
+          }}
+        >
+          Cancel
         </Button>
       </Form>
     </Container>

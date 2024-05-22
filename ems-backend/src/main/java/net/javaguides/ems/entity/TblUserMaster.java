@@ -1,10 +1,7 @@
 package net.javaguides.ems.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -15,17 +12,16 @@ import lombok.Setter;
 public class TblUserMaster {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "UserID")
     private long userId;
 
-    @Column(name = "UserName", nullable = false)
+    @Column(name = "UserName")
     private String name;
 
-    @Column(name = "MobileNumber", nullable = false)
+    @Column(name = "MobileNumber")
     private String mobileNumber;
 
-    @Column(name = "Password", nullable = false)
+    @Column(name = "Password")
     private String password;
-
 }

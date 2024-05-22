@@ -1,4 +1,3 @@
-import './App.css';
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Login from "./components/LoginComponent";
@@ -21,7 +20,7 @@ const App = () => {
 const MainContent = () => {
   const location = useLocation();
 
-  const showHeaderAndFooter = location.pathname === "/home";
+  const showHeaderAndFooter = location.pathname.startsWith("/home");
 
   return (
     <>
@@ -31,9 +30,9 @@ const MainContent = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/home/:id" element={<Home />}/>
-          <Route path="/home/:id/add" element={<Add />} />
-        <Route path="/" element={<Login />} /> {/* Default route */}
+        <Route path="/home/:id" element={<Home />} />
+        <Route path="/home/:id/add" element={<Add />} />
+        <Route path="/" element={<Login />} />
       </Routes>
       {showHeaderAndFooter && <FooterComponent />}
     </>
@@ -41,6 +40,3 @@ const MainContent = () => {
 };
 
 export default App;
-
-
-

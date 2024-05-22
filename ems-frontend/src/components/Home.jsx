@@ -1,40 +1,65 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Container, Table } from "reactstrap";
-import { getAllEmployees } from "../services/api";
-import { toast } from "react-toastify";
+// import { getEmployees } from "../services/UserService";
+
 const Home = () => {
   const [employees, setEmployees] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Home";
-    getAllEmployees(`/home`);
-    setEmployees(JSON.parse(sessionStorage.getItem("emp")));
-    const addMessage = sessionStorage.getItem("add");
-    if (addMessage != null) {
-      toast.success(addMessage);
-      sessionStorage.removeItem("add");
-    }
+
+    // const fetchEmployees = async () => {
+    //   try {
+    //     const data = await getEmployees();
+    //     setEmployees(data);
+    //   } catch (error) {
+    //     console.error("Error fetching employees:", error);
+    //   }
+    // };
+
+    // fetchEmployees();
   }, []);
+
+  const handleAddEmployee = () => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user) {
+      navigate(`/home/${user}/add`);
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const handleUpdate = (employeeId) => {
+    console.log("Update employee with ID:", employeeId);
+  };
+
+  const handleDelete = (employeeId) => {
+    console.log("Delete employee with ID:", employeeId);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <Container className="mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="text-center">Employee Data</h1>
+        <Button color="danger" onClick={handleLogout}>Logout</Button>
+        <h1 className="text-center" style={{ color: "#007bff", fontSize: "2rem" }}>Employee Data</h1>
         <Button
-          color="primary"
-          onClick={() =>
-            (window.location.href = `/home/${
-              JSON.parse(sessionStorage.getItem("user")).userid
-            }/add`)
-          }
-          style={{ borderRadius: "50%" }}
+          color="success"
+          onClick={handleAddEmployee}
+          style={{ borderRadius: "50%", fontSize: "1.5rem" }}
         >
-          +{" "}
+          Add
         </Button>
       </div>
-      <Table striped bordered hover>
+      <Table borderless hover>
         <thead>
-          <tr>
+          <tr style={{ backgroundColor: "#007bff", color: "#fff" }}>
             <th>EmpID</th>
             <th>EmpName</th>
             <th>Designation</th>
@@ -46,32 +71,29 @@ const Home = () => {
             <th>City</th>
             <th>State</th>
             <th>Country</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {employees && employees.length > 0 ? (
-            employees.map((employee) => (
-              <tr key={employee.empId}>
-                <td>{employee.empId}</td>
-                <td>{employee.empName}</td>
-                <td>{employee.designation}</td>
-                <td>{employee.department}</td>
-                <td>{employee.joinedDate}</td>
-                <td>{employee.salary}</td>
-                <td>{employee.addr1}</td>
-                <td>{employee.addr2}</td>
-                <td>{employee.city}</td>
-                <td>{employee.state}</td>
-                <td>{employee.country}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={11} className="text-center">
-                No records found.
+          {employees.map((employee) => (
+            <tr key={employee.empId}>
+              <td>{employee.empId}</td>
+              <td>{employee.empName}</td>
+              <td>{employee.designation}</td>
+              <td>{employee.department}</td>
+              <td>{employee.joinedDate}</td>
+              <td>{employee.salary}</td>
+              <td>{employee.addr1}</td>
+              <td>{employee.addr2}</td>
+              <td>{employee.city}</td>
+              <td>{employee.state}</td>
+              <td>{employee.country}</td>
+              <td>
+                <Button color="info" onClick={() => handleUpdate(employee.empId)}>Update</Button>{' '}
+                <Button color="danger" onClick={() => handleDelete(employee.empId)}>Delete</Button>
               </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </Table>
     </Container>

@@ -11,7 +11,7 @@ export const postApi = async (url, data, succ, err) => {
   } catch (error) {
     toast.error(err, { position: "top-center" });
     if (error.response) {
-      return error.response; // Ensure this returns the error response
+      return error.response;
     } else {
       console.error('API Error:', error);
       throw new Error('Network error or server is down');
@@ -27,38 +27,38 @@ export const getApi = async (url, succ, err) => {
   } catch (error) {
     toast.error(err, { position: "top-center" });
     if (error.response) {
-      return error.response; // Ensure this returns the error response
+      return error.response;
     } else {
       console.error('API Error:', error);
       throw new Error('Network error or server is down');
     }
   }
 };
-  
-  export const getAllEmployees = (url) => {
-    axios.get(base_url + url).then(
-      (response) => {
-        console.log("success", response);
-        sessionStorage.setItem("emp", JSON.stringify(response.data));
-      },
-      (error) => {
-        console.log("error", error);
-      }
-    );
-  };
-  
-  export const addEmployee = (url, data) => {
-    console.log("data", data);
-    console.log("url", base_url + url);
-    return axios.post(base_url + url, data).then(
-      (response) => {
-        console.log("success", response);
-        return response;
-      },
-      (error) => {
-        console.log("error", error);
-        return error;
-      }
-    );
-  };
-  
+
+// export const getEmployees = async () => {
+//   try {
+//     const response = await axios.get(base_url + "/home");
+//     toast.success("Employees fetched successfully!", { position: "top-center" });
+//     return response.data;
+//   } catch (error) {
+//     toast.error("Error fetching employees!", { position: "top-center" });
+//     throw error;
+//   }
+// };
+
+export const addEmployee = async (data) => {
+  try {
+    console.log("Sending data to server:", data); // Log data being sent
+    const response = await axios.post(base_url + "/home/add", data);
+    toast.success("Employee added successfully!", { position: "top-center" });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response data:", error.response.data); // Log error response from server
+    } else {
+      console.error("Error adding employee:", error); // Log general error
+    }
+    toast.error("Error adding employee!", { position: "top-center" });
+    throw error;
+  }
+};
