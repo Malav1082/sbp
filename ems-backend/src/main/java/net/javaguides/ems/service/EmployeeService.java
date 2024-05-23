@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,6 +64,34 @@ public class EmployeeService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public void deleteEmp(String empId) {
+        try {
+            System.out.println("e"+empId);
+            TblEmployeeMaster dm = employeeMasterRepository.findByEmpId(empId);
+            employeeDetailRepository.deleteById(dm.getMastCode());
+        } catch (NumberFormatException e) {
+            System.out.println("e"+empId);
+            throw new IllegalArgumentException("Invalid employee ID format: " + empId);
+        }
+    }
+
+    public EmployeeDto updateEmp(EmployeeDto ed, TblUserMaster user) {
+        System.out.println("ed" +ed);
+        System.out.println("user" +user);
+        TblEmployeeMaster currempmast = employeeMasterRepository.findByEmpId(ed.getEmpId());
+        modelMapper.map(ed, currempmast);
+        currempmast.setTblUserMaster(user);
+        TblEmployeeMaster savedMaster = employeeMasterRepository.save(currempmast);
+
+        TblEmployeeDetail currempdet = employeeDetailRepository.findByEmpCode(
+                savedMaster.getMastCode()
+        );
+        modelMapper.map(ed, currempdet);
+        employeeDetailRepository.save(currempdet);
+        System.out.println(ed);
+        return ed;
     }
 
     private EmployeeDto convertToDto(TblEmployeeMaster master, TblEmployeeDetail detail) {

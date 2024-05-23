@@ -28,7 +28,8 @@ const Login = () => {
         setSuccessAlert(true);
         setTimeout(() => {
           setSuccessAlert(false);
-          navigate(`/home/${response.data.userid}`);
+          console.log(response.data.userId);
+          navigate(`/home/${response.data.userId}`);
         }, 2000);
       } else {
         setErrorAlert(true);

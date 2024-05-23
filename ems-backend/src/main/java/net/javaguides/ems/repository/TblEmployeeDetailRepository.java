@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TblEmployeeDetailRepository extends JpaRepository<TblEmployeeDetail, Long> {
+    public TblEmployeeDetail findByEmpCode(Long empCode);
 }

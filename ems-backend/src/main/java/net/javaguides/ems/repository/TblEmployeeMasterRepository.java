@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TblEmployeeMasterRepository extends JpaRepository<TblEmployeeMaster, Long> {
+    public TblEmployeeMaster findByEmpId(String empId);
 }

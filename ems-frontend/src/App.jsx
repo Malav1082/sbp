@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import FooterComponent from './components/FooterComponent';
 import HeaderComponent from './components/HeaderComponent';
 import Add from "./components/Add";
+import Update from "./components/Update";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const MainContent = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/home/:id" element={<Home />} />
         <Route path="/home/:id/add" element={<Add />} />
+        <Route path="/home/:id/update/:empId" element={<Update />} />  {/* Updated route */}
         <Route path="/" element={<Login />} />
       </Routes>
       {showHeaderAndFooter && <FooterComponent />}

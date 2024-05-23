@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Table } from "reactstrap";
-// import { getEmployees } from "../services/UserService";
+import { getEmployees, deleteEmployee } from "../services/UserService";
 
 const Home = () => {
   const [employees, setEmployees] = useState([]);
@@ -9,34 +9,40 @@ const Home = () => {
 
   useEffect(() => {
     document.title = "Home";
+    console.log(sessionStorage.getItem("user"));
+    const fetchEmployees = async () => {
+      try {
+        const data = await getEmployees();
+        setEmployees(data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
 
-    // const fetchEmployees = async () => {
-    //   try {
-    //     const data = await getEmployees();
-    //     setEmployees(data);
-    //   } catch (error) {
-    //     console.error("Error fetching employees:", error);
-    //   }
-    // };
-
-    // fetchEmployees();
+    fetchEmployees();
   }, []);
 
   const handleAddEmployee = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
-    if (user) {
-      navigate(`/home/${user}/add`);
+    if (user.userId) {
+      navigate(`/home/${user.userId}/add`);
     } else {
       navigate("/login");
     }
   };
 
   const handleUpdate = (employeeId) => {
-    console.log("Update employee with ID:", employeeId);
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    navigate(`/home/${user.userId}/update/${employeeId}`);  // Updated to navigate to Update component
   };
 
-  const handleDelete = (employeeId) => {
-    console.log("Delete employee with ID:", employeeId);
+  const handleDelete = async (employeeId) => {
+    try {
+      await deleteEmployee(employeeId);
+      setEmployees(employees.filter(employee => employee.empId !== employeeId));
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
   };
 
   const handleLogout = () => {
@@ -71,7 +77,8 @@ const Home = () => {
             <th>City</th>
             <th>State</th>
             <th>Country</th>
-            <th>Action</th>
+            <th>Update</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -81,17 +88,21 @@ const Home = () => {
               <td>{employee.empName}</td>
               <td>{employee.designation}</td>
               <td>{employee.department}</td>
-              <td>{employee.joinedDate}</td>
+              <td>
+                {new Date(employee.joinedDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                })}
+              </td>
               <td>{employee.salary}</td>
               <td>{employee.addr1}</td>
               <td>{employee.addr2}</td>
               <td>{employee.city}</td>
               <td>{employee.state}</td>
               <td>{employee.country}</td>
-              <td>
-                <Button color="info" onClick={() => handleUpdate(employee.empId)}>Update</Button>{' '}
-                <Button color="danger" onClick={() => handleDelete(employee.empId)}>Delete</Button>
-              </td>
+              <td><Button color="info" onClick={() => handleUpdate(employee.empId)}>Update</Button></td>
+              <td><Button color="danger" onClick={() => handleDelete(employee.empId)}>Delete</Button></td>
             </tr>
           ))}
         </tbody>

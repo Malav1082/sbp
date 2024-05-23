@@ -3,6 +3,7 @@ package net.javaguides.ems.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.javaguides.ems.dto.EmployeeDto;
+import net.javaguides.ems.dto.EmployeeUserDto;
 import net.javaguides.ems.entity.TblUserMaster;
 import net.javaguides.ems.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 public class EmployeeController {
 
@@ -34,6 +36,7 @@ public class EmployeeController {
         try {
             if (eud.has("employee") && eud.has("user")) {
                 EmployeeDto employeeDTO = objectMapper.treeToValue(eud.get("employee"), EmployeeDto.class);
+                System.out.println( "eud" +eud);
                 TblUserMaster user = objectMapper.treeToValue(eud.get("user"), TblUserMaster.class);
 
                 if (employeeDTO == null) {
@@ -63,5 +66,34 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-}
 
+    @DeleteMapping("/home/delete/{empId}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("empId") String empId) {
+        employeeService.deleteEmp(empId);
+        return ResponseEntity.ok("Employee with Emp ID " + empId + " deleted.");
+    }
+
+    @PutMapping("/home/update/{empId}")
+    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeUserDto employeeUserDTO) {
+        System.out.println("employeeUserDTO"+employeeUserDTO);
+        try {
+            EmployeeDto e = employeeUserDTO.getEmployee();
+            TblUserMaster u = employeeUserDTO.getTblUserMaster();
+            if (employeeService.updateEmp(e, u) != null) {
+
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(
+                                "Employee with Emp ID " + e.getEmpId() + " updated successfully!"
+                        );
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body("Insertion Failed!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+}

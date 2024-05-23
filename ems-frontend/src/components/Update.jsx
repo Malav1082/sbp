@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Container, Form, FormGroup, Input, Label, Col, Row } from "reactstrap";
-import { addEmployee } from "../services/UserService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { updateEmployee } from "../services/UserService";
 
-const Add = () => {
+const Update = () => {
+  
+  const location = useLocation();
+  // const user = location.state.user;
+  const [user, setUser] = useState({});
+
   const [employee, setEmployee] = useState({
     empId: "",
     empName: "",
@@ -18,41 +23,49 @@ const Add = () => {
     country: ""
   });
 
-  const [user, setUser] = useState({});
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Update Employee";
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEmployee({ ...employee, [name]: value });
   };
 
-  const handleAdd = async (e) => {
+  const handleGoBack = () => {
+    navigate(`/home/${user.userid}`);
+  };
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    try {
-      const data = {
-        employee: employee,
-        user: JSON.parse(sessionStorage.getItem("user"))
-      }
-      console.log("Submitting employee data:", data); // Log the employee data
-      await addEmployee(data);
-      const user = JSON.parse(sessionStorage.getItem("user"));
-      if (user && user.userId) {
-        // console.log("user",user);
-        // console.log(user.userId);
-        navigate(`/home/${user.userId}`);
-      } else {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error("Error adding employee:", error);
+    const data = {
+      employee: employee,
+      user: JSON.parse(sessionStorage.getItem("user")),
+    };
+    console.log("e", employee);
+    const response = await updateEmployee(`/home/${user.userid}/update`, data);
+    if (response.status === 200) {
+      sessionStorage.setItem("update", response.data);
+      navigate(`/home/${user.userid}`, { state: { refresh: true } });
+    } else {
+      toast.error(response.response.data);
     }
   };
 
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+  //     2,
+  //     "0"
+  //   )}-${String(date.getDate()).padStart(2, "0")}`;
+  // };
+
   return (
     <Container className="mt-5">
-      <h1 className="text-center mb-4">Add Employee</h1>
-      <Form method="post" onSubmit={handleAdd}>
+      <h1 className="text-center mb-4">Update Employee</h1>
+      <Form method="post" onSubmit={handleUpdate}>
         <Row>
           <Col md={6}>
             <FormGroup>
@@ -63,7 +76,7 @@ const Add = () => {
                 id="empId"
                 placeholder="Enter EmpID"
                 onChange={handleInputChange}
-                required
+                value={employee.empId}
               />
             </FormGroup>
           </Col>
@@ -76,7 +89,7 @@ const Add = () => {
                 id="empName"
                 placeholder="Enter EmpName"
                 onChange={handleInputChange}
-                required
+                value={employee.empName}
               />
             </FormGroup>
           </Col>
@@ -91,7 +104,7 @@ const Add = () => {
                 id="designation"
                 placeholder="Enter Designation"
                 onChange={handleInputChange}
-                required
+                value={employee.designation}
               />
             </FormGroup>
           </Col>
@@ -104,7 +117,7 @@ const Add = () => {
                 id="department"
                 placeholder="Enter Department"
                 onChange={handleInputChange}
-                required
+                value={employee.department}
               />
             </FormGroup>
           </Col>
@@ -118,7 +131,7 @@ const Add = () => {
                 name="joinedDate"
                 id="joinedDate"
                 onChange={handleInputChange}
-                required
+                value={employee.joinedDate}
               />
             </FormGroup>
           </Col>
@@ -131,7 +144,7 @@ const Add = () => {
                 id="salary"
                 placeholder="Enter Salary"
                 onChange={handleInputChange}
-                required
+                value={employee.salary}
               />
             </FormGroup>
           </Col>
@@ -144,7 +157,7 @@ const Add = () => {
             id="addr1"
             placeholder="Enter AddressLine1"
             onChange={handleInputChange}
-            required
+            value={employee.addr1}
           />
         </FormGroup>
         <FormGroup>
@@ -155,7 +168,7 @@ const Add = () => {
             id="addr2"
             placeholder="Enter AddressLine2"
             onChange={handleInputChange}
-            required
+            value={employee.addr2}
           />
         </FormGroup>
         <Row>
@@ -168,7 +181,7 @@ const Add = () => {
                 id="city"
                 placeholder="Enter City"
                 onChange={handleInputChange}
-                required
+                value={employee.city}
               />
             </FormGroup>
           </Col>
@@ -181,7 +194,7 @@ const Add = () => {
                 id="state"
                 placeholder="Enter State"
                 onChange={handleInputChange}
-                required
+                value={employee.state}
               />
             </FormGroup>
           </Col>
@@ -194,27 +207,13 @@ const Add = () => {
                 id="country"
                 placeholder="Enter Country"
                 onChange={handleInputChange}
-                required
+                value={employee.country}
               />
             </FormGroup>
           </Col>
         </Row>
-        <Button color="primary" type="submit">
-          Add
-        </Button>
-        <Button
-          color="danger"
-          onClick={() => {
-            const user = JSON.parse(sessionStorage.getItem("user"));
-            if (user && user.userId) {
-              console.log(user);
-              console.log(user.userId);
-              navigate(`/home/${user.userId}`);
-            } else {
-              navigate("/login");
-            }
-          }}
-        >
+        <Button color="primary" type="submit">Update</Button>
+        <Button color="danger" onClick={handleGoBack}>
           Cancel
         </Button>
       </Form>
@@ -222,4 +221,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default Update;
