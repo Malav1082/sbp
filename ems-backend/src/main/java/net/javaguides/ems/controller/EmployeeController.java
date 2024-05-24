@@ -78,9 +78,9 @@ public class EmployeeController {
         System.out.println("employeeUserDTO"+employeeUserDTO);
         try {
             EmployeeDto e = employeeUserDTO.getEmployee();
-            TblUserMaster u = employeeUserDTO.getTblUserMaster();
+            TblUserMaster u = employeeUserDTO.getUser();
+            System.out.println("user" +u);
             if (employeeService.updateEmp(e, u) != null) {
-
                 return ResponseEntity
                         .status(HttpStatus.OK)
                         .body(

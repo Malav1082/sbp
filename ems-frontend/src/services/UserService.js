@@ -50,6 +50,7 @@ export const addEmployee = async (data) => {
   try {
     console.log("Sending data to server:", data); // Log data being sent
     const response = await axios.post(base_url + "/home/add", data);
+    console.log(base_url + "/home/add");
     // toast.success("Employee added successfully!", { position: "top-center" });
     return response.data;
   } catch (error) {
@@ -77,10 +78,10 @@ export const deleteEmployee = async (empId) => {
 
 export const updateEmployee = async (empId, data) => {
   try {
-    console.log("data",data);
+    console.log("data", data);
     const response = await axios.put(`${base_url}/home/update/${empId}`, data);
     toast.success("Employee updated successfully!", { position: "top-center" });
-    return response.data;
+    return response; // Return the full response object, not just response.data
   } catch (error) {
     toast.error("Error updating employee!", { position: "top-center" });
     if (error.response) {
@@ -91,3 +92,5 @@ export const updateEmployee = async (empId, data) => {
     throw error;
   }
 };
+
+

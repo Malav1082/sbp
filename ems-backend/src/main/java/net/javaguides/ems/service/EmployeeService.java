@@ -80,6 +80,7 @@ public class EmployeeService {
     public EmployeeDto updateEmp(EmployeeDto ed, TblUserMaster user) {
         System.out.println("ed" +ed);
         System.out.println("user" +user);
+
         TblEmployeeMaster currempmast = employeeMasterRepository.findByEmpId(ed.getEmpId());
         modelMapper.map(ed, currempmast);
         currempmast.setTblUserMaster(user);

@@ -20,7 +20,6 @@ const App = () => {
 
 const MainContent = () => {
   const location = useLocation();
-
   const showHeaderAndFooter = location.pathname.startsWith("/home");
 
   return (
@@ -33,7 +32,8 @@ const MainContent = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/home/:id" element={<Home />} />
         <Route path="/home/:id/add" element={<Add />} />
-        <Route path="/home/:id/update/:empId" element={<Update />} />  {/* Updated route */}
+        <Route path="/home/:id/update" element={<Update />} /> 
+        <Route path="/home/:id/update/:empId" element={<Update />} /> 
         <Route path="/" element={<Login />} />
       </Routes>
       {showHeaderAndFooter && <FooterComponent />}

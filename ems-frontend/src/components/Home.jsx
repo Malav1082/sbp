@@ -9,7 +9,6 @@ const Home = () => {
 
   useEffect(() => {
     document.title = "Home";
-    console.log(sessionStorage.getItem("user"));
     const fetchEmployees = async () => {
       try {
         const data = await getEmployees();
@@ -31,15 +30,19 @@ const Home = () => {
     }
   };
 
-  const handleUpdate = (employeeId) => {
+  const handleUpdate = (empId) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
-    navigate(`/home/${user.userId}/update/${employeeId}`);  // Updated to navigate to Update component
+    if (user && user.userId) {
+      navigate(`/home/${user.userId}/update/${empId}`);
+    } else {
+      navigate("/login");
+    }
   };
 
   const handleDelete = async (employeeId) => {
     try {
       await deleteEmployee(employeeId);
-      setEmployees(employees.filter(employee => employee.empId !== employeeId));
+      setEmployees(employees.filter((employee) => employee.empId !== employeeId));
     } catch (error) {
       console.error("Error deleting employee:", error);
     }
@@ -53,24 +56,28 @@ const Home = () => {
   return (
     <Container className="mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <Button color="danger" onClick={handleLogout}>Logout</Button>
-        <h1 className="text-center" style={{ color: "#007bff", fontSize: "2rem" }}>Employee Data</h1>
+        <Button color="danger" onClick={handleLogout}>
+          Logout
+        </Button>
+        <h1 className="text-center" style={{ color: "#007bff", fontSize: "2rem" }}>
+          Employee Data
+        </h1>
         <Button
           color="success"
           onClick={handleAddEmployee}
-          style={{ borderRadius: "50%", fontSize: "1.5rem" }}
+          // style={{ borderRadius: "50%", fontSize: "1.5rem" }}
         >
           Add
         </Button>
       </div>
-      <Table borderless hover>
+      <Table bordered hover>
         <thead>
           <tr style={{ backgroundColor: "#007bff", color: "#fff" }}>
             <th>EmpID</th>
             <th>EmpName</th>
             <th>Designation</th>
             <th>Department</th>
-            <th>Joined Date</th>
+            <th>JoinedDate</th>
             <th>Salary</th>
             <th>AddressLine1</th>
             <th>AddressLine2</th>
@@ -82,8 +89,8 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.empId}>
+          {employees.map((employee, index) => (
+            <tr key={employee.empId} style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "#fff" }}>
               <td>{employee.empId}</td>
               <td>{employee.empName}</td>
               <td>{employee.designation}</td>
@@ -101,8 +108,16 @@ const Home = () => {
               <td>{employee.city}</td>
               <td>{employee.state}</td>
               <td>{employee.country}</td>
-              <td><Button color="info" onClick={() => handleUpdate(employee.empId)}>Update</Button></td>
-              <td><Button color="danger" onClick={() => handleDelete(employee.empId)}>Delete</Button></td>
+              <td>
+                <Button color="info" onClick={() => handleUpdate(employee.empId)}>
+                  Update
+                </Button>
+              </td>
+              <td>
+                <Button color="danger" onClick={() => handleDelete(employee.empId)}>
+                  Delete
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>

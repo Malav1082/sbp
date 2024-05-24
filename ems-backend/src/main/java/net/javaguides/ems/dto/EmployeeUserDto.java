@@ -9,6 +9,6 @@ import net.javaguides.ems.entity.TblUserMaster;
 public class EmployeeUserDto {
 
     private EmployeeDto employee;
-    private TblUserMaster tblUserMaster;
+    private TblUserMaster user;
 }
 
