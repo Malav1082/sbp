@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Form, FormGroup, Input, Label, Alert } from "reactstrap";
+import { Button, Container, Form, FormGroup, Input, Label, Alert, Row, Col } from "reactstrap";
 import { postApi } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { Formik, ErrorMessage } from "formik";
@@ -12,116 +12,132 @@ const Register = () => {
     document.title = "Register";
   }, []);
 
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [registering, setRegistering] = useState(false);
+
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("UserName is required"),
+    name: Yup.string().required("User Name is required"),
     mobileNumber: Yup.string()
-      .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
-      .required("Mobile number is required"),
+      .required("Mobile number is required")
+      .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
     password: Yup.string()
       .required("Password is required")
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must contain at least 8 characters, one uppercase, one lowercase, one digit and one special character"
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/,
+        "Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one special character, and one number"
       ),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
-  });
+      .required("Confirm Password is required"),
+  });  
 
-  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  const handleRegister = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await postApi("/register", values, "Registered Successfully!", "Oops! Something went wrong.");
-      if (response.status === 200) {
+      setRegistering(true);
+      const response = await postApi("/register", values, "Registration Successful!", "Registration Failed");
+      if (response && response.status === 200) {
+        setSubmitting(false);
+        setRegisterSuccess(true);
         setTimeout(() => {
+          setRegisterSuccess(false);
           navigate("/login");
         }, 2000);
-      } else if (response.status === 409) {
-        setErrors({ confirmPassword: "User Already Exists!" });
+      } else {
+        setErrors({ password: "Registration Failed" });
+        setSubmitting(false);
+        setRegistering(false);
       }
     } catch (error) {
       console.error("Registration Error:", error);
-      setErrors({ confirmPassword: "Oops! Something went wrong." });
-    } finally {
+      setErrors({ password: "Error occurred during registration" });
       setSubmitting(false);
+      setRegistering(false);
     }
   };
 
   return (
-    <Container>
-      <h2 className="mt-4 mb-4">Register</h2>
+    <Container style={{ width: '30%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px', marginTop: '3%' }}>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }}>Register</h2>
+      {registerSuccess && (
+        <Alert color="success">
+          Registration Successful!
+        </Alert>
+      )}
       <Formik
-        initialValues={{ name: "", mobileNumber: "", password: "", confirmPassword: "" }}
+        initialValues={{ name: "", email: "", mobileNumber: "", password: "", confirmPassword: "" }}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={handleRegister}
       >
-        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+        {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label for="name">UserName</Label>
+              <Label for="name">User Name:</Label>
               <Input
                 type="text"
                 id="name"
                 name="name"
                 onChange={handleChange}
-                onBlur={handleBlur}
                 value={values.name}
-                invalid={touched.name && errors.name}
+                invalid={errors.name && touched.name}
               />
-              <ErrorMessage name="name" component="div" className="text-danger" />
+              <ErrorMessage name="name" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="mobileNumber">Mobile Number</Label>
+              <Label for="mobileNumber">Mobile Number:</Label>
               <Input
-                type="text"
+                type="tel"
                 id="mobileNumber"
                 name="mobileNumber"
                 onChange={handleChange}
-                onBlur={handleBlur}
                 value={values.mobileNumber}
-                invalid={touched.mobileNumber && errors.mobileNumber}
+                invalid={errors.mobileNumber && touched.mobileNumber}
               />
-              <ErrorMessage name="mobileNumber" component="div" className="text-danger" />
+              <ErrorMessage name="mobileNumber" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="password">Password</Label>
+              <Label for="password">Password:</Label>
               <Input
                 type="password"
                 id="password"
                 name="password"
                 onChange={handleChange}
-                onBlur={handleBlur}
                 value={values.password}
-                invalid={touched.password && errors.password}
+                invalid={errors.password && touched.password}
               />
-              <ErrorMessage name="password" component="div" className="text-danger" />
+              <ErrorMessage name="password" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="confirmPassword">Confirm Password</Label>
+              <Label for="confirmPassword">Confirm Password:</Label>
               <Input
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
                 onChange={handleChange}
-                onBlur={handleBlur}
                 value={values.confirmPassword}
-                invalid={touched.confirmPassword && errors.confirmPassword}
+                invalid={errors.confirmPassword && touched.confirmPassword}
               />
-              <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
+              <ErrorMessage name="confirmPassword" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
-            <Button type="submit" color="primary" disabled={isSubmitting}>
-              {isSubmitting ? "Registering..." : "Register"}
-            </Button>
-            <Button
-              type="button"
-              color="secondary"
-              className="ml-2"
-              onClick={() => navigate("/login")}
-            >
-              Back
-            </Button>
+            <Row className="mt-3">
+              <Col md={6}>
+                <Button type="submit" color="primary" className="w-100 mb-2" style={{ fontSize: '0.9rem' }} disabled={isSubmitting}>
+                  {isSubmitting ? "Registering..." : "Register"}
+                </Button>
+              </Col>
+              <Col md={6}>
+                <Button color="secondary" outline className="w-100" onClick={() => navigate("/login")}>
+                  Login
+                </Button>
+              </Col>
+            </Row>
           </Form>
         )}
       </Formik>
+      {registering && (
+        <div className="text-center mt-3">
+          <span className="text-muted">Registering...</span>
+        </div>
+      )}
     </Container>
   );
 };

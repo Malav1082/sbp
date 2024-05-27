@@ -30,10 +30,10 @@ const Home = () => {
     }
   };
 
-  const handleUpdate = (empId) => {
+  const handleUpdate = (employee) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (user && user.userId) {
-      navigate(`/home/${user.userId}/update/${empId}`);
+      navigate(`/home/${user.userId}/update/${employee.empId}`, { state: employee });
     } else {
       navigate("/login");
     }
@@ -54,18 +54,15 @@ const Home = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-5 d-flex flex-column align-items-center" style={{ marginBottom: "100px" }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <Button color="danger" onClick={handleLogout}>
-          Logout
-        </Button>
-        <h1 className="text-center" style={{ color: "#007bff", fontSize: "2rem" }}>
+        <h1 className="text-center" style={{ marginTop: '20px', color: "#007bff", fontSize: "2rem", position:"absolute", marginLeft: "300px"}}>
           Employee Data
         </h1>
         <Button
           color="success"
           onClick={handleAddEmployee}
-          // style={{ borderRadius: "50%", fontSize: "1.5rem" }}
+          style={{marginLeft: '850px', marginTop: '20px'}}
         >
           Add
         </Button>
@@ -109,7 +106,7 @@ const Home = () => {
               <td>{employee.state}</td>
               <td>{employee.country}</td>
               <td>
-                <Button color="info" onClick={() => handleUpdate(employee.empId)}>
+                <Button color="info" onClick={() => handleUpdate(employee)}>
                   Update
                 </Button>
               </td>

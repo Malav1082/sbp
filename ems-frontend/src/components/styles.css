@@ -1,0 +1,11 @@
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .centered-table {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+  

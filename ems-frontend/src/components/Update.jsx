@@ -6,23 +6,21 @@ import { toast } from "react-toastify";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0]; // yyyy-MM-dd format
+};
+
 const Update = () => {
   const { userId, empId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const employee = location.state;
 
   const [user, setUser] = useState({});
-  const [employee, setEmployee] = useState({
-    empId: empId || "",
-    empName: "",
-    designation: "",
-    department: "",
-    joinedDate: "",
-    salary: "",
-    addr1: "",
-    addr2: "",
-    city: "",
-    state: "",
-    country: ""
+  const [employeeData, setEmployeeData] = useState({
+    ...employee,
+    joinedDate: formatDate(employee.joinedDate) // Format joinedDate correctly
   });
 
   useEffect(() => {
@@ -101,9 +99,9 @@ const Update = () => {
 
   return (
     <Container className="mt-5">
-      <h1 className="text-center mb-4">Update Employee</h1>
+      <h1 className="text-center mb-4" style={{marginTop: '60px'}}>Update Employee</h1>
       <Formik
-        initialValues={employee}
+        initialValues={employeeData}
         validationSchema={validationSchema}
         onSubmit={handleUpdate}
       >
@@ -278,10 +276,10 @@ const Update = () => {
                 </FormGroup>
               </Col>
             </Row>
-            <Button color="primary" type="submit" disabled={isSubmitting}>
+            <Button color="primary" type="submit" disabled={isSubmitting} style={{marginBottom: '60px'}}>
               {isSubmitting ? "Updating..." : "Update"}
             </Button>
-            <Button color="danger" onClick={handleGoBack}>
+            <Button color="danger" onClick={handleGoBack} style={{marginBottom: '60px'}}>
               Cancel
             </Button>
           </Form>

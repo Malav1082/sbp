@@ -68,7 +68,7 @@ const Add = () => {
 
   return (
     <Container className="mt-5">
-      <h1 className="text-center mb-4">Add Employee</h1>
+      <h1 className="text-center mb-4" style={{marginTop: '60px'}}>Add Employee</h1>
       <Formik
         initialValues={{
           empId: "",
@@ -256,10 +256,10 @@ const Add = () => {
                 </FormGroup>
               </Col>
             </Row>
-            <Button color="primary" type="submit" disabled={isSubmitting}>
+            <Button color="primary" type="submit" disabled={isSubmitting} style={{marginBottom: '60px'}}>
               {isSubmitting ? "Adding..." : "Add"}
             </Button>
-            <Button
+            <Button style={{marginBottom: '60px'}}
               color="danger"
               onClick={() => {
                 const user = JSON.parse(sessionStorage.getItem("user"));

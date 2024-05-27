@@ -25,6 +25,10 @@ public class EmployeeService {
     @Autowired
     private ModelMapper modelMapper;
 
+    public boolean isEmpIdExists(String empId) {
+        return employeeMasterRepository.existsByEmpId(empId);
+    }
+
     public EmployeeDto addEmp(EmployeeDto ed, TblUserMaster user) {
         if (ed == null) {
             throw new IllegalArgumentException("EmployeeDto must not be null");
@@ -35,6 +39,11 @@ public class EmployeeService {
 
         System.out.println("Adding Employee: " + ed);
         System.out.println("With User: " + user);
+
+        // Check if empId already exists
+        if (isEmpIdExists(ed.getEmpId())) {
+            throw new IllegalArgumentException("Employee with empId " + ed.getEmpId() + " already exists");
+        }
 
         TblEmployeeMaster tblEmployeeMaster = modelMapper.map(ed, TblEmployeeMaster.class);
         tblEmployeeMaster.setTblUserMaster(user);
