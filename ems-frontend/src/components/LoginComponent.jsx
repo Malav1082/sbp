@@ -50,7 +50,7 @@ const Login = () => {
 
   return (
     <Container style={{ width: '30%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px', marginTop: '7%' }}>
-      <h2 className="mt-4 mb-4" style={{ textAlign: 'center', color: '#ffd400'}}>Login</h2>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center', color: 'white'}}>Login</h2>
       {loginSuccess && (
         <Alert color="success">
           Login Successful!

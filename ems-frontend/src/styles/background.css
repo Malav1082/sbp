@@ -65,11 +65,11 @@ h1, h3, p {
 }
 
 .add-update {
-  color: white;
+  color: yellow;
 }
 
 .login-register-reset-forgot {
-  color: white;
+  color: yellow;  
 }
 
 .password-input-container {
@@ -80,6 +80,7 @@ h1, h3, p {
   position: absolute;
   top: 50%;
   right: 10px;
+  margin-right: 20px;
   transform: translateY(-50%);
   cursor: pointer;
 }

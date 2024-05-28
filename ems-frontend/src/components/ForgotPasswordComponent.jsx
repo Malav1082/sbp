@@ -52,7 +52,7 @@ const ForgotPassword = () => {
 
   return (
     <Container style={{ width: '30%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px', marginTop: '7%' }}>
-      <h2 className="mt-4 mb-4" style={{ textAlign: 'center', color: '#ffd400' }}>Forgot Password</h2>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center', color: 'white' }}>Forgot Password</h2>
       {successAlert && <Alert color="success">Password reset successfully!</Alert>}
       <Formik
         initialValues={{ name: "", new_password: "", confirmPassword: "" }}

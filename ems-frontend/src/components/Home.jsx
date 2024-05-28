@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     document.title = "Home";
     const fetchEmployees = async () => {
-      try {
+      try { 
         const data = await getEmployees();
         setEmployees(data);
       } catch (error) {
