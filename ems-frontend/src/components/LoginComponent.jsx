@@ -4,6 +4,7 @@ import { postApi } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Login = () => {
 
   const [loginSuccess, setLoginSuccess] = useState(false); // State for login success message
   const [loggingIn, setLoggingIn] = useState(false); // State for displaying "Logging in..." message
+  const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("User Name is required"),
@@ -48,7 +50,7 @@ const Login = () => {
 
   return (
     <Container style={{ width: '30%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px', marginTop: '7%' }}>
-      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }}>Login</h2>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center', color: '#ffd400'}}>Login</h2>
       {loginSuccess && (
         <Alert color="success">
           Login Successful!
@@ -62,7 +64,7 @@ const Login = () => {
         {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label for="name">User Name:</Label>
+              <Label for="name" className="login-register-reset-forgot">User Name:</Label>
               <Input
                 type="text"
                 id="name"
@@ -74,15 +76,25 @@ const Login = () => {
               <ErrorMessage name="name" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="password">Password:</Label>
-              <Input
-                type="password"
-                id="password"
-                name="password"
-                onChange={handleChange}
-                value={values.password}
-                invalid={errors.password && touched.password}
-              />
+              <Label for="password" className="login-register-reset-forgot">Password:</Label>
+              <div className="password-input-container">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  onChange={handleChange}
+                  value={values.password}
+                  invalid={errors.password && touched.password}
+                  style={{ position: 'relative' }}
+                />
+                <span
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
               <ErrorMessage name="password" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <Row className="mt-3">

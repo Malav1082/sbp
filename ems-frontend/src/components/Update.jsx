@@ -5,10 +5,11 @@ import { updateEmployee } from "../services/UserService";
 import { toast } from "react-toastify";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import "../styles/background.css";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return date.toISOString().split('T')[0]; // yyyy-MM-dd format
+  return date.toISOString().split('T')[0];
 };
 
 const Update = () => {
@@ -20,7 +21,7 @@ const Update = () => {
   const [user, setUser] = useState({});
   const [employeeData, setEmployeeData] = useState({
     ...employee,
-    joinedDate: formatDate(employee.joinedDate) // Format joinedDate correctly
+    joinedDate: formatDate(employee.joinedDate)
   });
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const Update = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-1);
   };
 
   const validationSchema = Yup.object().shape({
@@ -99,7 +100,7 @@ const Update = () => {
 
   return (
     <Container className="mt-5">
-      <h1 className="text-center mb-4" style={{marginTop: '60px'}}>Update Employee</h1>
+      <h1 className="text-center mb-4 add-update">Update Employee</h1>
       <Formik
         initialValues={employeeData}
         validationSchema={validationSchema}
@@ -110,7 +111,7 @@ const Update = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="empId">EmpID</Label>
+                  <Label for="empId" className="add-update">EmpID</Label>
                   <Input
                     type="text"
                     name="empId"
@@ -126,7 +127,7 @@ const Update = () => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="empName">EmpName</Label>
+                  <Label for="empName" className="add-update">EmpName</Label>
                   <Input
                     type="text"
                     name="empName"
@@ -143,7 +144,7 @@ const Update = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="designation">Designation</Label>
+                  <Label for="designation" className="add-update">Designation</Label>
                   <Input
                     type="text"
                     name="designation"
@@ -158,7 +159,7 @@ const Update = () => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="department">Department</Label>
+                  <Label for="department" className="add-update">Department</Label>
                   <Input
                     type="text"
                     name="department"
@@ -175,7 +176,7 @@ const Update = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="joinedDate">Joined Date</Label>
+                  <Label for="joinedDate" className="add-update">Joined Date</Label>
                   <Input
                     type="date"
                     name="joinedDate"
@@ -189,7 +190,7 @@ const Update = () => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="salary">Salary</Label>
+                  <Label for="salary" className="add-update">Salary</Label>
                   <Input
                     type="number"
                     name="salary"
@@ -204,7 +205,7 @@ const Update = () => {
               </Col>
             </Row>
             <FormGroup>
-              <Label for="addr1">AddressLine1</Label>
+              <Label for="addr1" className="add-update">AddressLine1</Label>
               <Input
                 type="text"
                 name="addr1"
@@ -217,7 +218,7 @@ const Update = () => {
               <ErrorMessage name="addr1" component="div" className="text-danger" />
             </FormGroup>
             <FormGroup>
-              <Label for="addr2">AddressLine2</Label>
+              <Label for="addr2" className="add-update">AddressLine2</Label>
               <Input
                 type="text"
                 name="addr2"
@@ -232,7 +233,7 @@ const Update = () => {
             <Row>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="city">City</Label>
+                  <Label for="city" className="add-update">City</Label>
                   <Input
                     type="text"
                     name="city"
@@ -247,7 +248,7 @@ const Update = () => {
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="state">State</Label>
+                  <Label for="state" className="add-update">State</Label>
                   <Input
                     type="text"
                     name="state"
@@ -262,7 +263,7 @@ const Update = () => {
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="country">Country</Label>
+                  <Label for="country" className="add-update">Country</Label>
                   <Input
                     type="text"
                     name="country"
@@ -279,9 +280,9 @@ const Update = () => {
             <Button color="primary" type="submit" disabled={isSubmitting} style={{marginBottom: '60px'}}>
               {isSubmitting ? "Updating..." : "Update"}
             </Button>
-            <Button color="danger" onClick={handleGoBack} style={{marginBottom: '60px'}}>
+            {/* <Button color="danger" onClick={handleGoBack} style={{marginBottom: '60px'}}>
               Cancel
-            </Button>
+            </Button> */}
           </Form>
         )}
       </Formik>

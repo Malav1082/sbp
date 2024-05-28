@@ -1,0 +1,44 @@
+.custom-navbar , .footer{
+    /* background-image: url('https://images.unsplash.com/photo-1503264116251-35a269479413?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080'); */
+  /* background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080'); */
+  /* background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080'); */
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+    color: #FFFFFF;
+  }
+  
+  .navbar-title {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  .home-button {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #0D6EFD;
+    font-weight: bold;
+  }
+  
+  .home-button:hover {
+    background-color: #0D6EFD;
+    color: #FFFFFF;
+  }
+  
+  .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #FFFFFF;
+  }
+  
+  .dropdown-item {
+    color: #FFFFFF;
+  }
+  
+  .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .dropdown-toggle::after {
+    display: none;
+  }
+  

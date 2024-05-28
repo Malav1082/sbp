@@ -3,11 +3,14 @@ import { Button, Container, Form, FormGroup, Input, Label, Alert, Row, Col } fro
 import { useNavigate } from "react-router-dom";
 import { postApi } from "../services/UserService";
 import { Formik, ErrorMessage } from "formik";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as Yup from "yup";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [successAlert, setSuccessAlert] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     document.title = "Forgot Password";
@@ -49,7 +52,7 @@ const ForgotPassword = () => {
 
   return (
     <Container style={{ width: '30%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px', marginTop: '7%' }}>
-      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }}>Forgot Password</h2>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center', color: '#ffd400' }}>Forgot Password</h2>
       {successAlert && <Alert color="success">Password reset successfully!</Alert>}
       <Formik
         initialValues={{ name: "", new_password: "", confirmPassword: "" }}
@@ -59,39 +62,61 @@ const ForgotPassword = () => {
         {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label for="name">UserName:</Label>
-              <Input
-                type="text"
-                id="name"
-                name="name"
-                onChange={handleChange}
-                value={values.name}
-                invalid={errors.name && touched.name}
-              />
+              <div className="password-input-container">
+                <Label for="name" className="login-register-reset-forgot">User Name:</Label>
+                <Input
+                  type="text"
+                  id="name"
+                  name="name"
+                  onChange={handleChange}
+                  value={values.name}
+                  invalid={errors.name && touched.name}
+                />
+              </div>
               <ErrorMessage name="name" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="new_password">New Password:</Label>
+              <Label for="new_password" className="login-register-reset-forgot">New Password:</Label>
+              <div className="password-input-container">
               <Input
-                type="password"
+                type={showNewPassword ? "text" : "new_password"}
                 id="new_password"
                 name="new_password"
                 onChange={handleChange}
                 value={values.new_password}
                 invalid={errors.new_password && touched.new_password}
+                style={{ position: 'relative' }}
               />
+              <span
+                className="password-toggle"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+              >
+                {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+              </div>
               <ErrorMessage name="new_password" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="confirmPassword">Confirm New Password:</Label>
-              <Input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                onChange={handleChange}
-                value={values.confirmPassword}
-                invalid={errors.confirmPassword && touched.confirmPassword}
-              />
+              <Label for="confirmPassword" className="login-register-reset-forgot">Confirm Password:</Label>
+              <div className="password-input-container">
+                <Input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  onChange={handleChange}
+                  value={values.confirmPassword}
+                  invalid={errors.confirmPassword && touched.confirmPassword}
+                  style={{ position: 'relative' }}
+                />
+                <span
+                  className="password-toggle"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
               <ErrorMessage name="confirmPassword" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <Row className="mt-3">

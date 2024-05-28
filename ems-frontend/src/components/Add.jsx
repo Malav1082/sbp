@@ -4,17 +4,18 @@ import { addEmployee } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import "../styles/background.css";
 
 const Add = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       const data = {
         employee: values,
         user: JSON.parse(sessionStorage.getItem("user"))
       };
-      console.log("Submitting employee data:", data); // Log the employee data
+      console.log("Submitting employee data:", data);
       await addEmployee(data);
       const user = JSON.parse(sessionStorage.getItem("user"));
       if (user && user.userId) {
@@ -24,10 +25,16 @@ const Add = () => {
       }
     } catch (error) {
       console.error("Error adding employee:", error);
+      if (error.response && error.response.data) {
+        // Assuming the backend sends a clear message for duplicate empId error
+        setErrors({ empId: error.response.data });
+      }
     } finally {
       setSubmitting(false);
     }
   };
+
+  const currentDate = new Date().toISOString().split('T')[0];
 
   const validationSchema = Yup.object().shape({
     empId: Yup.string().required("EmpID is required"),
@@ -68,7 +75,7 @@ const Add = () => {
 
   return (
     <Container className="mt-5">
-      <h1 className="text-center mb-4" style={{marginTop: '60px'}}>Add Employee</h1>
+      <h1 className="text-center mb-4 add-update">Add Employee</h1>
       <Formik
         initialValues={{
           empId: "",
@@ -91,7 +98,7 @@ const Add = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="empId">EmpID</Label>
+                  <Label for="empId" className="add-update">EmpID</Label>
                   <Input
                     type="text"
                     name="empId"
@@ -99,14 +106,15 @@ const Add = () => {
                     placeholder="Enter EmpID"
                     value={values.empId}
                     onChange={handleChange}
-                    className={getInputClass(touched.empId, errors.empId)}
+                    className={'add-update-input getInputClass(touched.empId, errors.empId)'
+                    }
                   />
                   <ErrorMessage name="empId" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="empName">EmpName</Label>
+                  <Label for="empName" className='add-update'>EmpName</Label>
                   <Input
                     type="text"
                     name="empName"
@@ -114,7 +122,7 @@ const Add = () => {
                     placeholder="Enter EmpName"
                     value={values.empName}
                     onChange={handleChange}
-                    className={getInputClass(touched.empName, errors.empName)}
+                    className={'add-update-input getInputClass(touched.empName, errors.empName)'}
                   />
                   <ErrorMessage name="empName" component="div" className="text-danger" />
                 </FormGroup>
@@ -123,7 +131,7 @@ const Add = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="designation">Designation</Label>
+                  <Label for="designation" className='add-update'>Designation</Label>
                   <Input
                     type="text"
                     name="designation"
@@ -131,14 +139,14 @@ const Add = () => {
                     placeholder="Enter Designation"
                     value={values.designation}
                     onChange={handleChange}
-                    className={getInputClass(touched.designation, errors.designation)}
+                    className={'add-update-input getInputClass(touched.designation, errors.designation)'}
                   />
                   <ErrorMessage name="designation" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="department">Department</Label>
+                  <Label for="department" className='add-update'>Department</Label>
                   <Input
                     type="text"
                     name="department"
@@ -146,7 +154,7 @@ const Add = () => {
                     placeholder="Enter Department"
                     value={values.department}
                     onChange={handleChange}
-                    className={getInputClass(touched.department, errors.department)}
+                    className={'add-update-input getInputClass(touched.department, errors.department)'}
                   />
                   <ErrorMessage name="department" component="div" className="text-danger" />
                 </FormGroup>
@@ -155,21 +163,23 @@ const Add = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="joinedDate">Joined Date</Label>
+                  <Label for="joinedDate" className='add-update'>Joined Date</Label>
                   <Input
                     type="date"
                     name="joinedDate"
                     id="joinedDate"
                     value={values.joinedDate}
                     onChange={handleChange}
-                    className={getInputClass(touched.joinedDate, errors.joinedDate)}
+                    onFocus={(e) => { e.target.blur(); }} // Blur the field immediately when focused
+                    max={currentDate} // Set the maximum allowed date to the current date
+                    className={'add-update-input getInputClass(touched.joinedDate, errors.joinedDate)'}
                   />
                   <ErrorMessage name="joinedDate" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="salary">Salary</Label>
+                  <Label for="salary" className='add-update'>Salary</Label>
                   <Input
                     type="number"
                     name="salary"
@@ -177,14 +187,14 @@ const Add = () => {
                     placeholder="Enter Salary"
                     value={values.salary}
                     onChange={handleChange}
-                    className={getInputClass(touched.salary, errors.salary)}
+                    className={'add-update-input getInputClass(touched.salary, errors.salary)'}
                   />
                   <ErrorMessage name="salary" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
             </Row>
             <FormGroup>
-              <Label for="addr1">AddressLine1</Label>
+              <Label for="addr1" className='add-update'>AddressLine1</Label>
               <Input
                 type="text"
                 name="addr1"
@@ -192,12 +202,12 @@ const Add = () => {
                 placeholder="Enter AddressLine1"
                 value={values.addr1}
                 onChange={handleChange}
-                className={getInputClass(touched.addr1, errors.addr1)}
+                className={'add-update-input getInputClass(touched.addr1, errors.addr1)'}
               />
               <ErrorMessage name="addr1" component="div" className="text-danger" />
             </FormGroup>
             <FormGroup>
-              <Label for="addr2">AddressLine2</Label>
+              <Label for="addr2" className='add-update'>AddressLine2</Label>
               <Input
                 type="text"
                 name="addr2"
@@ -205,14 +215,14 @@ const Add = () => {
                 placeholder="Enter AddressLine2"
                 value={values.addr2}
                 onChange={handleChange}
-                className={getInputClass(touched.addr2, errors.addr2)}
+                className={'add-update-input getInputClass(touched.addr2, errors.addr2)'}
               />
               <ErrorMessage name="addr2" component="div" className="text-danger" />
             </FormGroup>
             <Row>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="city">City</Label>
+                  <Label for="city" className='add-update'>City</Label>
                   <Input
                     type="text"
                     name="city"
@@ -220,14 +230,14 @@ const Add = () => {
                     placeholder="Enter City"
                     value={values.city}
                     onChange={handleChange}
-                    className={getInputClass(touched.city, errors.city)}
+                    className={'add-update-input getInputClass(touched.city, errors.city)'}
                   />
                   <ErrorMessage name="city" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="state">State</Label>
+                  <Label for="state" className='add-update'>State</Label>
                   <Input
                     type="text"
                     name="state"
@@ -235,14 +245,14 @@ const Add = () => {
                     placeholder="Enter State"
                     value={values.state}
                     onChange={handleChange}
-                    className={getInputClass(touched.state, errors.state)}
+                    className={'add-update-input getInputClass(touched.state, errors.state)'}
                   />
                   <ErrorMessage name="state" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="country">Country</Label>
+                  <Label for="country" className='add-update'>Country</Label>
                   <Input
                     type="text"
                     name="country"
@@ -250,28 +260,18 @@ const Add = () => {
                     placeholder="Enter Country"
                     value={values.country}
                     onChange={handleChange}
-                    className={getInputClass(touched.country, errors.country)}
+                    className={'add-update-input getInputClass(touched.country, errors.country)'}
                   />
                   <ErrorMessage name="country" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
             </Row>
-            <Button color="primary" type="submit" disabled={isSubmitting} style={{marginBottom: '60px'}}>
-              {isSubmitting ? "Adding..." : "Add"}
+            <Button type="submit" color="primary" disabled={isSubmitting} style={{ marginBottom: '60px' }}>
+              Add
             </Button>
-            <Button style={{marginBottom: '60px'}}
-              color="danger"
-              onClick={() => {
-                const user = JSON.parse(sessionStorage.getItem("user"));
-                if (user && user.userId) {
-                  navigate(`/home/${user.userId}`);
-                } else {
-                  navigate("/login");
-                }
-              }}
-            >
+            {/* <Button color="danger" onClick={handleGoBack} style={{marginBottom: '60px'}}>
               Cancel
-            </Button>
+            </Button> */}
           </Form>
         )}
       </Formik>

@@ -4,10 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { postApi } from "../services/UserService";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const [successAlert, setSuccessAlert] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     document.title = "Reset Password";
@@ -38,7 +42,7 @@ const ResetPassword = () => {
           navigate("/login");
         }, 2000);
       } else {
-        setErrors({ password: "Password reset failed" });
+        setErrors({ password: "Old Password is Incorrect" });
         setSubmitting(false);
       }
     } catch (error) {
@@ -50,7 +54,7 @@ const ResetPassword = () => {
 
   return (
     <Container style={{ width: '30%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px', marginTop: '3%' }}>
-      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' }}>Reset Password</h2>
+      <h2 className="mt-4 mb-4" style={{ textAlign: 'center' , color: '#ffd400'}}>Reset Password</h2>
       {successAlert && <Alert color="success">Password reset successfully!</Alert>}
       <Formik
         initialValues={{ name: "", password: "", new_password: "", confirmPassword: "" }}
@@ -60,7 +64,7 @@ const ResetPassword = () => {
         {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label for="name">Username:</Label>
+              <Label for="name" className="login-register-reset-forgot">User Name:</Label>
               <Input
                 type="text"
                 id="name"
@@ -72,39 +76,69 @@ const ResetPassword = () => {
               <ErrorMessage name="name" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="password">Old Password:</Label>
+              <Label for="password" className="login-register-reset-forgot">Old Password:</Label>
+              <div className="password-input-container">
               <Input
-                type="password"
+                type={showOldPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 onChange={handleChange}
                 value={values.password}
                 invalid={errors.password && touched.password}
+                style={{position: 'relative'}}
               />
+              <span
+                  className="password-toggle"
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                  style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                >
+                  {showOldPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
               <ErrorMessage name="password" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="new_password">New Password:</Label>
+              </FormGroup>
+              <FormGroup>
+              <Label for="new_password" className="login-register-reset-forgot">New Password:</Label>
+              <div className="password-input-container">
               <Input
-                type="password"
+                type={showNewPassword ? "text" : "new_password"}
                 id="new_password"
                 name="new_password"
                 onChange={handleChange}
                 value={values.new_password}
                 invalid={errors.new_password && touched.new_password}
+                style={{ position: 'relative' }}
               />
+              <span
+                className="password-toggle"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+              >
+                {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+              </div>
               <ErrorMessage name="new_password" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <FormGroup>
-              <Label for="confirmPassword">Confirm New Password:</Label>
-              <Input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                onChange={handleChange}
-                value={values.confirmPassword}
-                invalid={errors.confirmPassword && touched.confirmPassword}
-              />
+              <Label for="confirmPassword" className="login-register-reset-forgot">Confirm Password:</Label>
+              <div className="password-input-container">
+                <Input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  onChange={handleChange}
+                  value={values.confirmPassword}
+                  invalid={errors.confirmPassword && touched.confirmPassword}
+                  style={{ position: 'relative' }}
+                />
+                <span
+                  className="password-toggle"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
               <ErrorMessage name="confirmPassword" component="div" className="text-danger" style={{ marginTop: '0.25rem' }} />
             </FormGroup>
             <Row className="mt-3">

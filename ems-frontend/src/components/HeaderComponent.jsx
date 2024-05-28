@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "../styles/HeaderComponent.css";
+import "@fortawesome/fontawesome-free/css/all.min.css"; // Ensure Font Awesome is imported
 
 const HeaderComponent = () => {
   const [user, setUser] = useState(null);
@@ -17,8 +19,17 @@ const HeaderComponent = () => {
     navigate('/login');
   };
 
+  const handleHome = () => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (user && user.userId) {
+      navigate(`/home/${user.userId}`);
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light fixed-top" style={{ backgroundColor: '#0D6EFD', color: '#FFFFFF' }}>
+    <nav className="navbar navbar-expand-lg navbar-light fixed-top custom-navbar">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -31,12 +42,15 @@ const HeaderComponent = () => {
         >
           <i className="fas fa-bars"></i>
         </button>
-
+  
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <h3>Employee Management System</h3>
+          <h3 className="navbar-title">Employee Management System</h3>
         </div>
-
+  
         <div className="d-flex align-items-center">
+          <button onClick={handleHome} className="btn btn-light me-3 home-button">
+            <i className="fas fa-home"></i>
+          </button>
           <div className="dropdown">
             <a
               className="dropdown-toggle d-flex align-items-center hidden-arrow"
@@ -78,6 +92,5 @@ const HeaderComponent = () => {
       </div>
     </nav>
   );
-};
-
+}  
 export default HeaderComponent;
