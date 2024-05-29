@@ -8,15 +8,16 @@ import Home from "./components/Home";
 import FooterComponent from './components/FooterComponent';
 import HeaderComponent from './components/HeaderComponent';
 import Add from "./components/Add";
-import Update from "./components/Update";
+import Update from "./components/update";
+import WelcomePage from "./components/Welcome";
 
-const App = () => {
+function App() {
   return (
     <Router>
       <MainContent />
     </Router>
   );
-};
+}
 
 const MainContent = () => {
   const location = useLocation();
@@ -30,6 +31,7 @@ const MainContent = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/welcome/:id" element={<WelcomePage/>}/>
         <Route path="/home/:id" element={<Home />} />
         <Route path="/home/:id/add" element={<Add />} />
         <Route path="/home/:id/update" element={<Update />} /> 

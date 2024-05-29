@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 const base_url = "http://localhost:8080";
 
+// POST request handler
 export const postApi = async (url, data, succ, err) => {
   try {
     const response = await axios.post(base_url + url, data);
@@ -19,6 +20,7 @@ export const postApi = async (url, data, succ, err) => {
   }
 };
 
+// GET request handler
 export const getApi = async (url, succ, err) => {
   try {
     const response = await axios.get(base_url + url);
@@ -35,53 +37,63 @@ export const getApi = async (url, succ, err) => {
   }
 };
 
-export const getEmployees = async (data) => {
+// Fetch employees with pagination, sorting, and search
+export const getEmployees = async (page, size, sortField, sortDirection, search) => {
   try {
-    const response = await axios.get(base_url + "/home",data);
-    // toast.success("Employees fetched successfully!", { position: "top-center" });
+    const response = await axios.get(base_url + "/home", {
+      params: {
+        page,
+        size,
+        sortField,
+        sortDirection,
+        search,
+      },
+    });
     return response.data;
   } catch (error) {
-    // toast.error("Error fetching employees!", { position: "top-center" });
+    console.error('Error fetching employees:', error);
     throw error;
   }
 };
 
+// Add a new employee
 export const addEmployee = async (data) => {
   try {
-    console.log("Sending data to server:", data); // Log data being sent
+    console.log("Sending data to server:", data);
     const response = await axios.post(base_url + "/home/add", data);
-    console.log(base_url + "/home/add");
-    // toast.success("Employee added successfully!", { position: "top-center" });
+    toast.success("Employee added successfully!", { position: "top-center" });
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.error("Error response data:", error.response.data); // Log error response from server
+      console.error("Error response data:", error.response.data);
     } else {
-      console.error("Error adding employee:", error); // Log general error
+      console.error("Error adding employee:", error);
     }
-    // toast.error("Error adding employee!", { position: "top-center" });
+    toast.error("Error adding employee!", { position: "top-center" });
     throw error;
   }
 };
 
+// Delete an employee
 export const deleteEmployee = async (empId) => {
   try {
     const response = await axios.delete(`${base_url}/home/delete/${empId}`);
     toast.success("Employee deleted successfully!", { position: "top-center" });
     return response.data;
   } catch (error) {
-    console.log("Error deleting employee:", error);
+    console.error("Error deleting employee:", error);
     toast.error("Error deleting employee!", { position: "top-center" });
     throw error;
   }
 };
 
+// Update an existing employee
 export const updateEmployee = async (empId, data) => {
   try {
     console.log("data", data);
     const response = await axios.put(`${base_url}/home/update/${empId}`, data);
     toast.success("Employee updated successfully!", { position: "top-center" });
-    return response; // Return the full response object, not just response.data
+    return response; // Return the full response object
   } catch (error) {
     toast.error("Error updating employee!", { position: "top-center" });
     if (error.response) {
@@ -92,5 +104,3 @@ export const updateEmployee = async (empId, data) => {
     throw error;
   }
 };
-
-

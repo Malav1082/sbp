@@ -1,0 +1,28 @@
+/* Welcome.css */
+
+.image-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .welcome-text {
+    font-size: 20px;
+    color: #000; /* Ensure text color is visible */
+  }
+  
+  /* Additional CSS for debugging */
+  body {
+    background-color: #f0f0f0; /* Simple background for debugging */
+    color: #000;
+  }
+  
+  .container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  h1, h3, p {
+    color: #000;
+  }
+  

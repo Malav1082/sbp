@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/HeaderComponent.css";
-import "@fortawesome/fontawesome-free/css/all.min.css"; // Ensure Font Awesome is imported
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const HeaderComponent = () => {
   const [user, setUser] = useState(null);
@@ -19,7 +19,16 @@ const HeaderComponent = () => {
     navigate('/login');
   };
 
-  const handleHome = () => {
+  const handleWelcome = () => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (user && user.userId) {
+      navigate(`/welcome/${user.userId}`);
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const handleEmployeeData = () => {
     const user = JSON.parse(sessionStorage.getItem('user'));
     if (user && user.userId) {
       navigate(`/home/${user.userId}`);
@@ -46,9 +55,12 @@ const HeaderComponent = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <h3 className="navbar-title">Employee Management System</h3>
         </div>
-  
+
         <div className="d-flex align-items-center">
-          <button onClick={handleHome} className="btn btn-light me-3 home-button">
+          <button onClick={handleEmployeeData} className="btn btn-light me-3">
+            Employee Data
+          </button>
+          <button onClick={handleWelcome} className="btn btn-light me-3 home-button">
             <i className="fas fa-home"></i>
           </button>
           <div className="dropdown">
@@ -93,4 +105,5 @@ const HeaderComponent = () => {
     </nav>
   );
 }  
+
 export default HeaderComponent;

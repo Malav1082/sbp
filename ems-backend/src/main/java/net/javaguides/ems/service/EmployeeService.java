@@ -8,9 +8,12 @@ import net.javaguides.ems.repository.TblEmployeeDetailRepository;
 import net.javaguides.ems.repository.TblEmployeeMasterRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,6 +105,24 @@ public class EmployeeService {
         employeeDetailRepository.save(currempdet);
         System.out.println(ed);
         return ed;
+    }
+
+
+    public Page<EmployeeDto> getAllEmployees(int page, int size, String sortField, String sortDirection, String search) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<TblEmployeeMaster> mastersPage;
+        if (search != null && !search.isEmpty()) {
+            mastersPage = employeeMasterRepository.findByEmpNameContainingIgnoreCase(search, pageable);
+        } else {
+            mastersPage = employeeMasterRepository.findAll(pageable);
+        }
+
+        return mastersPage.map(master -> {
+            TblEmployeeDetail detail = employeeDetailRepository.findById(master.getMastCode()).orElse(null);
+            return convertToDto(master, detail);
+        });
     }
 
     private EmployeeDto convertToDto(TblEmployeeMaster master, TblEmployeeDetail detail) {

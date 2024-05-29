@@ -33,7 +33,7 @@ const Login = () => {
         setLoginSuccess(true); // Set login success state to true
         setTimeout(() => {
           setLoginSuccess(false); // Reset login success state after 2 seconds
-          navigate(`/home/${response.data.userId}`);
+          navigate(`/welcome/${response.data.userId}`);
         }, 2000);
       } else {
         setErrors({ password: "Invalid User Name or Password" });

@@ -7,6 +7,7 @@ import net.javaguides.ems.dto.EmployeeUserDto;
 import net.javaguides.ems.entity.TblUserMaster;
 import net.javaguides.ems.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +24,15 @@ public class EmployeeController {
     private ObjectMapper objectMapper;
 
     @GetMapping("/home")
-    public ResponseEntity<?> getEmployees() {
-        List<EmployeeDto> employees = employeeService.getAllEmployees();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(employees);
+    public ResponseEntity<?> getEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "empName") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(defaultValue = "") String search) {
+
+        Page<EmployeeDto> employeesPage = employeeService.getAllEmployees(page, size, sortField, sortDirection, search);
+        return ResponseEntity.status(HttpStatus.OK).body(employeesPage);
     }
 
     @PostMapping("/home/add")
@@ -36,7 +41,7 @@ public class EmployeeController {
         try {
             if (eud.has("employee") && eud.has("user")) {
                 EmployeeDto employeeDTO = objectMapper.treeToValue(eud.get("employee"), EmployeeDto.class);
-                System.out.println( "eud" +eud);
+                System.out.println("eud" + eud);
                 TblUserMaster user = objectMapper.treeToValue(eud.get("user"), TblUserMaster.class);
 
                 if (employeeDTO == null) {
@@ -75,11 +80,11 @@ public class EmployeeController {
 
     @PutMapping("/home/update/{empId}")
     public ResponseEntity<?> updateEmployee(@RequestBody EmployeeUserDto employeeUserDTO) {
-        System.out.println("employeeUserDTO"+employeeUserDTO);
+        System.out.println("employeeUserDTO" + employeeUserDTO);
         try {
             EmployeeDto e = employeeUserDTO.getEmployee();
             TblUserMaster u = employeeUserDTO.getUser();
-            System.out.println("user" +u);
+            System.out.println("user" + u);
             if (employeeService.updateEmp(e, u) != null) {
                 return ResponseEntity
                         .status(HttpStatus.OK)
