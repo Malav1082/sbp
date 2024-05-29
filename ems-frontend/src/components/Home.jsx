@@ -102,11 +102,11 @@ const Home = () => {
               <th onClick={() => handleSortChange('department')}>Department</th>
               <th onClick={() => handleSortChange('joinedDate')}>JoinedDate</th>
               <th onClick={() => handleSortChange('salary')}>Salary</th>
-              <th>AddressLine1</th>
-              <th>AddressLine2</th>
-              <th>City</th>
-              <th>State</th>
-              <th>Country</th>
+              <th onClick={() => handleSortChange('addr1')}>AddressLine1</th>
+              <th onClick={() => handleSortChange('addr2')}>AddressLine2</th>
+              <th onClick={() => handleSortChange('city')}>City</th>
+              <th onClick={() => handleSortChange('state')}>State</th>
+              <th onClick={() => handleSortChange('country')}>Country</th>
               <th>Actions</th>
             </tr>
           </thead>

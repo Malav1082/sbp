@@ -1,32 +1,34 @@
-import React, {useState, useEffect} from 'react'
-import HeaderComponent from './HeaderComponent';
-import FooterComponent from './FooterComponent';
+import React, { useState, useEffect } from "react";
+import HeaderComponent from "./HeaderComponent";
+import FooterComponent from "./FooterComponent";
 import "../styles/Welcome.css";
-import "../styles/background.css"
+import "../styles/background.css";
+import emp from "../images/emp.jpg";
+import emp1 from "../images/emp1.jpg";
 
 const WelcomePage = () => {
-    const [user, setUser] = useState(null);
-  
-    useEffect(() => {
-      const userData = JSON.parse(sessionStorage.getItem('user'));
-      if (userData) {
-        setUser(userData);
-      }
-    }, []);
+  const [user, setUser] = useState(null);
 
-    // if (!user) {
-    //   return <div>Loading...</div>;
-    // }
+  useEffect(() => {
+    const userData = JSON.parse(sessionStorage.getItem("user"));
+    if (userData) {
+      setUser(userData);
+    }
+  }, []);
+
   return (
     <div>
       <HeaderComponent />
       <div className="image-container">
-        {/* <img src="emp.jpg" className="custom-img" alt="Employee" /> */}
+        <img src={emp} className="custom-img" alt="Employee" height="400px" width="400px" />
         <div className="welcome-text">
-          Welcome to Employee Records Management System, 
-          {/* {user.userName}. */}
+          Welcome to Employee
+        <div>
+          Management System,
         </div>
-        {/* <img src="emp1.jpg" className="custom-img" alt="Employee" /> */}
+          {user && <h1>{user.name}</h1>}
+        </div>
+        <img src={emp1} className="custom-img" alt="Employee" height="400px" width="400px" />
       </div>
       <FooterComponent />
     </div>
