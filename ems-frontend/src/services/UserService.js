@@ -37,7 +37,6 @@ export const getApi = async (url, succ, err) => {
   }
 };
 
-// Fetch employees with pagination, sorting, and search
 export const getEmployees = async (page, size, sortField, sortDirection, search) => {
   try {
     const response = await axios.get(base_url + "/home", {
@@ -55,6 +54,7 @@ export const getEmployees = async (page, size, sortField, sortDirection, search)
     throw error;
   }
 };
+
 
 // Add a new employee
 export const addEmployee = async (data) => {

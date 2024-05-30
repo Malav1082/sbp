@@ -107,23 +107,27 @@ public class EmployeeService {
         return ed;
     }
 
-
-    public Page<EmployeeDto> getAllEmployees(int page, int size, String sortField, String sortDirection, String search) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        Page<TblEmployeeMaster> mastersPage;
-        if (search != null && !search.isEmpty()) {
-            mastersPage = employeeMasterRepository.findByEmpNameContainingIgnoreCase(search, pageable);
-        } else {
-            mastersPage = employeeMasterRepository.findAll(pageable);
-        }
-
-        return mastersPage.map(master -> {
-            TblEmployeeDetail detail = employeeDetailRepository.findById(master.getMastCode()).orElse(null);
-            return convertToDto(master, detail);
-        });
-    }
+//    public Page<EmployeeDto> getAllEmployees(int page, int size, String sortField, String sortDirection, String search) {
+//        Sort sort;
+//        if (sortField.equals("addr1") || sortField.equals("addr2") || sortField.equals("city") || sortField.equals("state") || sortField.equals("country")) {
+//            sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by("addr1").ascending() : Sort.by("addr1").descending();
+//        } else {
+//            sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+//        }
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//
+//        Page<TblEmployeeMaster> mastersPage;
+//        if (search != null && !search.isEmpty()) {
+//            mastersPage = employeeMasterRepository.findByEmpNameContainingIgnoreCaseAndSorted(search, sortField, pageable);
+//        } else {
+//            mastersPage = employeeMasterRepository.findAll(pageable);
+//        }
+//
+//        return mastersPage.map(master -> {
+//            TblEmployeeDetail detail = employeeDetailRepository.findById(master.getMastCode()).orElse(null);
+//            return convertToDto(master, detail);
+//        });
+//    }
 
     private EmployeeDto convertToDto(TblEmployeeMaster master, TblEmployeeDetail detail) {
         EmployeeDto dto = modelMapper.map(master, EmployeeDto.class);

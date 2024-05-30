@@ -1,5 +1,5 @@
 .image-container {
-  margin-top: 150px;
+  margin-top: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,16 +7,18 @@
 }
 
 .custom-img {
+  margin : 20px;
   border-radius: 50%;
   border: 10px solid #000;
 }
 
 .welcome-text {
-  padding: 50px;
-  border: 10px;
+  padding: 90px;
+  border: 10px solid #000000;
   border-radius: 50%;
-  background-color: yellow;
+  background-color: #f5f9034f;
   font-size: 24px;
   font-weight: bold;
   text-align: center;
+  color: rgb(0, 255, 242);
 }

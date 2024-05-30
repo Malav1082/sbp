@@ -23,16 +23,26 @@ public class EmployeeController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @GetMapping("/home")
-    public ResponseEntity<?> getEmployees(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "empName") String sortField,
-            @RequestParam(defaultValue = "asc") String sortDirection,
-            @RequestParam(defaultValue = "") String search) {
+//    @GetMapping("/home")
+//    public ResponseEntity<?> getEmployees(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "empName") String sortField,
+//            @RequestParam(defaultValue = "asc") String sortDirection,
+//            @RequestParam(defaultValue = "") String search) {
+//
+//        System.out.println("page"+page+","+sortField+","+sortDirection+","+search);
+//        Page<EmployeeDto> employeesPage = employeeService.getAllEmployees(page, size, sortField, sortDirection, search);
+//        return ResponseEntity.status(HttpStatus.OK).body(employeesPage);
+//    }
 
-        Page<EmployeeDto> employeesPage = employeeService.getAllEmployees(page, size, sortField, sortDirection, search);
-        return ResponseEntity.status(HttpStatus.OK).body(employeesPage);
+    @GetMapping("/home")
+    public ResponseEntity<?> getEmployees() {
+        System.out.println("home");
+        List<EmployeeDto> employees = employeeService.getAllEmployees();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body((employees != null) ? employees : "null");
     }
 
     @PostMapping("/home/add")

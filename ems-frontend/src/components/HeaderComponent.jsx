@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/HeaderComponent.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import icon from "../images/icon.png"
 
 const HeaderComponent = () => {
   const [user, setUser] = useState(null);
@@ -35,6 +36,11 @@ const HeaderComponent = () => {
     } else {
       navigate('/login');
     }
+  };
+
+  const handleEditProfile = () => {
+    // Redirect to the edit profile page
+    navigate('/edit-profile');
   };
 
   return (
@@ -73,10 +79,10 @@ const HeaderComponent = () => {
               aria-expanded="false"
             >
               <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                src={icon}
                 className="rounded-circle"
                 height="25"
-                alt="User Avatar"
+                alt="User"
                 loading="lazy"
               />
             </a>
@@ -90,6 +96,11 @@ const HeaderComponent = () => {
                   <li className="dropdown-item">
                     <i className="fas fa-phone me-2"></i>
                     {user.mobileNumber}
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleEditProfile}>
+                      <i className="fas fa-user-edit me-2"></i> Edit Profile
+                    </button>
                   </li>
                   <li>
                     <button className="dropdown-item" onClick={handleLogout}>
