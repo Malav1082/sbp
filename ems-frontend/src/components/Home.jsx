@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { Button, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { Button, Input } from "reactstrap";
 import { getEmployees, deleteEmployee } from "../services/UserService";
 import "../styles/background.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -15,8 +15,6 @@ const Home = () => {
   const [sortField, setSortField] = useState("empName");
   const [sortDirection, setSortDirection] = useState("asc");
   const [search, setSearch] = useState("");
-  const [selectedSearchProperty, setSelectedSearchProperty] = useState("empName");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -193,48 +191,27 @@ const Home = () => {
 
   return (
     <div className="home-container mt-5 d-flex flex-column align-items-center" style={{ marginBottom: "100px" }}>
-      <div className="d-flex justify-content-between align-items-center mb-4" style={{ width: "100%" }}>
-        <h1 className="text-center" style={{ marginTop: '20px', color: "#ffc107", fontSize: "2rem", marginLeft: '570px' }}>
-          Employee Data
-        </h1>
-        <Button
-          color="success"
-          onClick={handleAddEmployee}
-          style={{ marginLeft: 'auto', marginTop: '20px', marginRight: '110px' }}
-        >
-          <i className="fas fa-plus"></i>
-        </Button>
-      </div>
-      <div style={{ marginBottom: "20px" }}>
+      <h1 className="text-center" style={{ color: "#ffc107", fontSize: "2rem" , marginTop: "10px"}}>
+        Employee Data
+      </h1>
+      <div className="d-flex justify-content-between align-items-center w-100" style={{ padding: '0 20px', marginBottom: '10px' }}>
         <Input
           type="text"
           placeholder="Search"
           value={search}
           onChange={handleSearchChange}
-          style={{ marginBottom: "10px", width: "300px" }}
+          style={{ width: "300px" }}
         />
-        {/* <Dropdown isOpen={dropdownOpen} toggle={() => setDropdownOpen(!dropdownOpen)}>
-          <DropdownToggle caret>
-            Search Property
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem onClick={() => setSelectedSearchProperty("empId")}>EmpId</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("empName")}>EmpName</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("designation")}>Designation</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("department")}>Department</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("joinedDate")}>JoinedDate</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("salary")}>Salary</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("addr1")}>Address Line 1</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("addr2")}>Address Line 2</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("city")}>City</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("state")}>State</DropdownItem>
-            <DropdownItem onClick={() => setSelectedSearchProperty("country")}>Country</DropdownItem>
-          </DropdownMenu>
-        </Dropdown> */}
+        <Button
+          color="success"
+          onClick={handleAddEmployee}
+        >
+          <i className="fas fa-plus"></i>
+        </Button>
       </div>
       <DataTable
         columns={columns}
-        data={paginatedEmployees} // Use paginated data
+        data={paginatedEmployees}
         pagination
         paginationServer
         paginationTotalRows={totalRows}
@@ -243,6 +220,20 @@ const Home = () => {
         onSort={handleSort}
         sortServer
         highlightOnHover
+        customStyles={{
+          headCells: {
+            style: {
+              backgroundColor: '#f1f1f1',
+              fontWeight: 'bold',
+            },
+          },
+          cells: {
+            style: {
+              backgroundColor: '#fafafa',
+            },
+          },
+        }}
+        className="w-100"
       />
     </div>
   );

@@ -37,6 +37,24 @@ export const getApi = async (url, succ, err) => {
   }
 };
 
+// PUT request handler
+export const putApi = async (url, data, succ, err) => {
+  try {
+    const response = await axios.put(base_url + url, data);
+    toast.success(succ, { position: "top-center" });
+    return response;
+  } catch (error) {
+    console.log("error",error);
+    toast.error(err, { position: "top-center" });
+    if (error.response) {
+      return error.response;
+    } else {
+      console.error('API Error:', error);
+      throw new Error('Network error or server is down');
+    }
+  }
+};
+
 export const getEmployees = async (page, size, sortField, sortDirection, search) => {
   try {
     const response = await axios.get(base_url + "/home", {
