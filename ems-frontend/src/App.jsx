@@ -10,6 +10,7 @@ import HeaderComponent from './components/HeaderComponent';
 import Add from "./components/Add";
 import Update from "./components/update";
 import WelcomePage from "./components/Welcome";
+import EditProfile from "./components/EditProfile";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ const MainContent = () => {
         <Route path="/home/:id/add" element={<Add />} />
         <Route path="/home/:id/update" element={<Update />} /> 
         <Route path="/home/:id/update/:empId" element={<Update />} /> 
+        <Route path="/edit-profile" element={<EditProfile/>}/>
         <Route path="/" element={<Login />} />
       </Routes>
       {showHeaderAndFooter && <FooterComponent />}

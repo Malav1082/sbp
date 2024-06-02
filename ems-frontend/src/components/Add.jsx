@@ -26,12 +26,15 @@ const Add = () => {
     } catch (error) {
       console.error("Error adding employee:", error);
       if (error.response && error.response.data) {
-        // Assuming the backend sends a clear message for duplicate empId error
         setErrors({ empId: error.response.data });
       }
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleGoBack = () => {
+    navigate(-1); // Navigates back to the previous page
   };
 
   const currentDate = new Date().toISOString().split('T')[0];
@@ -106,8 +109,7 @@ const Add = () => {
                     placeholder="Enter EmpID"
                     value={values.empId}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.empId, errors.empId)'
-                    }
+                    className={`add-update-input ${getInputClass(touched.empId, errors.empId)}`}
                   />
                   <ErrorMessage name="empId" component="div" className="text-danger" />
                 </FormGroup>
@@ -122,7 +124,7 @@ const Add = () => {
                     placeholder="Enter EmpName"
                     value={values.empName}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.empName, errors.empName)'}
+                    className={`add-update-input ${getInputClass(touched.empName, errors.empName)}`}
                   />
                   <ErrorMessage name="empName" component="div" className="text-danger" />
                 </FormGroup>
@@ -139,7 +141,7 @@ const Add = () => {
                     placeholder="Enter Designation"
                     value={values.designation}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.designation, errors.designation)'}
+                    className={`add-update-input ${getInputClass(touched.designation, errors.designation)}`}
                   />
                   <ErrorMessage name="designation" component="div" className="text-danger" />
                 </FormGroup>
@@ -154,7 +156,7 @@ const Add = () => {
                     placeholder="Enter Department"
                     value={values.department}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.department, errors.department)'}
+                    className={`add-update-input ${getInputClass(touched.department, errors.department)}`}
                   />
                   <ErrorMessage name="department" component="div" className="text-danger" />
                 </FormGroup>
@@ -172,7 +174,7 @@ const Add = () => {
                     onChange={handleChange}
                     onFocus={(e) => { e.target.blur(); }} // Blur the field immediately when focused
                     max={currentDate} // Set the maximum allowed date to the current date
-                    className={'add-update-input getInputClass(touched.joinedDate, errors.joinedDate)'}
+                    className={`add-update-input ${getInputClass(touched.joinedDate, errors.joinedDate)}`}
                   />
                   <ErrorMessage name="joinedDate" component="div" className="text-danger" />
                 </FormGroup>
@@ -187,7 +189,7 @@ const Add = () => {
                     placeholder="Enter Salary"
                     value={values.salary}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.salary, errors.salary)'}
+                    className={`add-update-input ${getInputClass(touched.salary, errors.salary)}`}
                   />
                   <ErrorMessage name="salary" component="div" className="text-danger" />
                 </FormGroup>
@@ -202,7 +204,7 @@ const Add = () => {
                 placeholder="Enter AddressLine1"
                 value={values.addr1}
                 onChange={handleChange}
-                className={'add-update-input getInputClass(touched.addr1, errors.addr1)'}
+                className={`add-update-input ${getInputClass(touched.addr1, errors.addr1)}`}
               />
               <ErrorMessage name="addr1" component="div" className="text-danger" />
             </FormGroup>
@@ -215,7 +217,7 @@ const Add = () => {
                 placeholder="Enter AddressLine2"
                 value={values.addr2}
                 onChange={handleChange}
-                className={'add-update-input getInputClass(touched.addr2, errors.addr2)'}
+                className={`add-update-input ${getInputClass(touched.addr2, errors.addr2)}`}
               />
               <ErrorMessage name="addr2" component="div" className="text-danger" />
             </FormGroup>
@@ -230,7 +232,7 @@ const Add = () => {
                     placeholder="Enter City"
                     value={values.city}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.city, errors.city)'}
+                    className={`add-update-input ${getInputClass(touched.city, errors.city)}`}
                   />
                   <ErrorMessage name="city" component="div" className="text-danger" />
                 </FormGroup>
@@ -245,7 +247,7 @@ const Add = () => {
                     placeholder="Enter State"
                     value={values.state}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.state, errors.state)'}
+                    className={`add-update-input ${getInputClass(touched.state, errors.state)}`}
                   />
                   <ErrorMessage name="state" component="div" className="text-danger" />
                 </FormGroup>
@@ -260,18 +262,22 @@ const Add = () => {
                     placeholder="Enter Country"
                     value={values.country}
                     onChange={handleChange}
-                    className={'add-update-input getInputClass(touched.country, errors.country)'}
+                    className={`add-update-input ${getInputClass(touched.country, errors.country)}`}
                   />
                   <ErrorMessage name="country" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
             </Row>
-            <Button type="submit" color="primary" disabled={isSubmitting} style={{ marginBottom: '60px' }}>
-              Add
-            </Button>
-            {/* <Button color="danger" onClick={handleGoBack} style={{marginBottom: '60px'}}>
-              Cancel
-            </Button> */}
+            <Row>
+              <Col>
+                <Button type="submit" color="primary" disabled={isSubmitting} style={{ marginBottom: '60px' }}>
+                  Add
+                </Button>
+                <Button color="danger" onClick={handleGoBack} style={{ marginBottom: '60px', marginLeft: '10px' }}>
+                  Back
+                </Button>
+              </Col>
+            </Row>
           </Form>
         )}
       </Formik>

@@ -1,8 +1,8 @@
 package net.javaguides.ems.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.javaguides.ems.service.TblUserMasterService;
 import net.javaguides.ems.entity.TblUserMaster;
+import net.javaguides.ems.service.TblUserMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,6 @@ public class TblUserMasterController {
         }
     }
 
-    //    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody TblUserMaster tblUserMaster) {
         TblUserMaster user = tblUserMasterService.getUserByEP(tblUserMaster.getName(), tblUserMaster.getPassword());
@@ -62,6 +61,20 @@ public class TblUserMasterController {
             return ResponseEntity.status(HttpStatus.OK).body("Password Changed Successfully!");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found!");
+        }
+    }
+
+    @PutMapping("/edit-profile/{userId}")
+    public ResponseEntity<String> updateProfile(@RequestBody JsonNode user) {
+        Long userId = user.get("userId").asLong();
+        String newName = user.get("name").asText();
+        String newMobileNumber = user.get("mobileNumber").asText();
+
+        TblUserMaster updatedUser = tblUserMasterService.updateUserProfile(userId, newName, newMobileNumber);
+        if (updatedUser != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Profile Updated Successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }
     }
 }
