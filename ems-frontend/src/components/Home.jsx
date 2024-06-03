@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { Button, Input } from "reactstrap";
+import { Button, Input, Alert } from "reactstrap";
 import { getEmployees, deleteEmployee } from "../services/UserService";
 import "../styles/background.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -15,6 +15,7 @@ const Home = () => {
   const [sortField, setSortField] = useState("empName");
   const [sortDirection, setSortDirection] = useState("asc");
   const [search, setSearch] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // Success message state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -98,6 +99,8 @@ const Home = () => {
     try {
       await deleteEmployee(employeeId);
       fetchEmployees();
+      setSuccessMessage("Employee deleted successfully!");
+      setTimeout(() => setSuccessMessage(""), 2000); // Hide success message after 2 seconds
     } catch (error) {
       console.error("Error deleting employee:", error);
     }
@@ -191,10 +194,15 @@ const Home = () => {
 
   return (
     <div className="home-container mt-5 d-flex flex-column align-items-center" style={{ marginBottom: "100px" }}>
-      <h1 className="text-center" style={{ color: "#ffc107", fontSize: "2rem" , marginTop: "10px"}}>
+      <h1 className="text-center" style={{ color: "#ffc107", fontSize: "2rem", marginTop: "10px" }}>
         Employee Data
       </h1>
-      <div className="d-flex justify-content-between align-items-center w-100" style={{ padding: '0 20px', marginBottom: '10px' }}>
+      {successMessage && (
+        <Alert color="success" className="w-50 text-center">
+          {successMessage}
+        </Alert>
+      )}
+      <div className="d-flex justify-content-between align-items-center w-100" style={{ padding: '0 30px', marginBottom: '10px' }}>
         <Input
           type="text"
           placeholder="Search"
@@ -209,32 +217,34 @@ const Home = () => {
           <i className="fas fa-plus"></i>
         </Button>
       </div>
-      <DataTable
-        columns={columns}
-        data={paginatedEmployees}
-        pagination
-        paginationServer
-        paginationTotalRows={totalRows}
-        onChangeRowsPerPage={handlePerRowsChange}
-        onChangePage={handlePageChange}
-        onSort={handleSort}
-        sortServer
-        highlightOnHover
-        customStyles={{
-          headCells: {
-            style: {
-              backgroundColor: '#f1f1f1',
-              fontWeight: 'bold',
+      <div style={{}}>
+        <DataTable
+          columns={columns}
+          data={paginatedEmployees}
+          pagination
+          paginationServer
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
+          onSort={handleSort}
+          sortServer
+          highlightOnHover
+          customStyles={{
+            headCells: {
+              style: {
+                backgroundColor: '#f1f1f1',
+                fontWeight: 'bold',
+              },
             },
-          },
-          cells: {
-            style: {
-              backgroundColor: '#fafafa',
+            cells: {
+              style: {
+                backgroundColor: '#fafafa',
+              },
             },
-          },
-        }}
-        className="w-100"
-      />
+          }}
+          className="w-100"
+        />
+      </div>
     </div>
   );
 };

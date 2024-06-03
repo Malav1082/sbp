@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Form, FormGroup, Input, Label, Col, Row } from "reactstrap";
+import { Button, Container, Form, FormGroup, Input, Label, Col, Row, Alert } from "reactstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { updateEmployee } from "../services/UserService";
 import { toast } from "react-toastify";
@@ -18,6 +18,7 @@ const Update = () => {
   const location = useLocation();
   const employee = location.state;
 
+  const [successMessage, setSuccessMessage] = useState("");
   const [user, setUser] = useState({});
   const [employeeData, setEmployeeData] = useState({
     ...employee,
@@ -45,7 +46,8 @@ const Update = () => {
       const response = await updateEmployee(empId, data);
       if (response && response.status === 200) {
         sessionStorage.setItem("update", JSON.stringify(response.data));
-        navigate(`/home/${user.userId}`, { state: { refresh: true } });
+        setSuccessMessage("Employee updated successfully!");
+        setTimeout(() => navigate(`/home/${user.userId}`, { state: { refresh: true } }), 2000);
       } else {
         toast.error(response?.data || "Unknown error");
       }
@@ -101,6 +103,7 @@ const Update = () => {
   return (
     <Container className="mt-5">
       <h1 className="text-center mb-4 add-update">Update Employee</h1>
+      {successMessage && <Alert color="success">{successMessage}</Alert>}
       <Formik
         initialValues={employeeData}
         validationSchema={validationSchema}
@@ -109,7 +112,7 @@ const Update = () => {
         {({ isSubmitting, handleSubmit, handleChange, values, touched, errors }) => (
           <Form onSubmit={handleSubmit}>
             <Row>
-              <Col md={6}>
+              <Col md={4}>
                 <FormGroup>
                   <Label for="empId" className="add-update">EmpID</Label>
                   <Input
@@ -125,7 +128,7 @@ const Update = () => {
                   <ErrorMessage name="empId" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
-              <Col md={6}>
+              <Col md={4}>
                 <FormGroup>
                   <Label for="empName" className="add-update">EmpName</Label>
                   <Input
@@ -140,9 +143,7 @@ const Update = () => {
                   <ErrorMessage name="empName" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+              <Col md={4}>
                 <FormGroup>
                   <Label for="designation" className="add-update">Designation</Label>
                   <Input
@@ -157,7 +158,9 @@ const Update = () => {
                   <ErrorMessage name="designation" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
-              <Col md={6}>
+            </Row>
+            <Row>
+              <Col md={4}>
                 <FormGroup>
                   <Label for="department" className="add-update">Department</Label>
                   <Input
@@ -172,9 +175,7 @@ const Update = () => {
                   <ErrorMessage name="department" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+              <Col md={4}>
                 <FormGroup>
                   <Label for="joinedDate" className="add-update">Joined Date</Label>
                   <Input
@@ -188,7 +189,7 @@ const Update = () => {
                   <ErrorMessage name="joinedDate" component="div" className="text-danger" />
                 </FormGroup>
               </Col>
-              <Col md={6}>
+              <Col md={4}>
                 <FormGroup>
                   <Label for="salary" className="add-update">Salary</Label>
                   <Input
@@ -204,32 +205,38 @@ const Update = () => {
                 </FormGroup>
               </Col>
             </Row>
-            <FormGroup>
-              <Label for="addr1" className="add-update">AddressLine1</Label>
-              <Input
-                type="text"
-                name="addr1"
-                id="addr1"
-                placeholder="Enter AddressLine1"
-                onChange={handleChange}
-                value={values.addr1}
-                className={getInputClass(touched.addr1, errors.addr1)}
-              />
-              <ErrorMessage name="addr1" component="div" className="text-danger" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="addr2" className="add-update">AddressLine2</Label>
-              <Input
-                type="text"
-                name="addr2"
-                id="addr2"
-                placeholder="Enter AddressLine2"
-                onChange={handleChange}
-                value={values.addr2}
-                className={getInputClass(touched.addr2, errors.addr2)}
-              />
-              <ErrorMessage name="addr2" component="div" className="text-danger" />
-            </FormGroup>
+            <Row>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="addr1" className="add-update">AddressLine1</Label>
+                  <Input
+                    type="text"
+                    name="addr1"
+                    id="addr1"
+                    placeholder="Enter AddressLine1"
+                    onChange={handleChange}
+                    value={values.addr1}
+                    className={getInputClass(touched.addr1, errors.addr1)}
+                  />
+                  <ErrorMessage name="addr1" component="div" className="text-danger" />
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="addr2" className="add-update">AddressLine2</Label>
+                  <Input
+                    type="text"
+                    name="addr2"
+                    id="addr2"
+                    placeholder="Enter AddressLine2"
+                    onChange={handleChange}
+                    value={values.addr2}
+                    className={getInputClass(touched.addr2, errors.addr2)}
+                  />
+                  <ErrorMessage name="addr2" component="div" className="text-danger" />
+                </FormGroup>
+              </Col>
+            </Row>
             <Row>
               <Col md={4}>
                 <FormGroup>
@@ -277,12 +284,12 @@ const Update = () => {
                 </FormGroup>
               </Col>
             </Row>
-            <Button color="primary" type="submit" disabled={isSubmitting} style={{marginBottom: '60px'}}>
+            <Button color="primary" type="submit" disabled={isSubmitting} style={{ marginBottom: '60px' }}>
               {isSubmitting ? "Updating..." : "Update"}
             </Button>
-            {/* <Button color="danger" onClick={handleGoBack} style={{marginBottom: '60px'}}>
-              Cancel
-            </Button> */}
+            <Button color="danger" onClick={handleGoBack} style={{ marginBottom: '60px', marginLeft: '10px' }}>
+              Back
+            </Button>
           </Form>
         )}
       </Formik>
