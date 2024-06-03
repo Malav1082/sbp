@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface TblUserMasterRepository extends JpaRepository<TblUserMaster, Long> {
     public TblUserMaster findByName(String name);
     public TblUserMaster findByNameAndPassword(String name, String password);
-//    Optional<TblUserMaster> findByUsername(String username);
 }

@@ -23,19 +23,6 @@ public class EmployeeController {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @GetMapping("/home")
-//    public ResponseEntity<?> getEmployees(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "empName") String sortField,
-//            @RequestParam(defaultValue = "asc") String sortDirection,
-//            @RequestParam(defaultValue = "") String search) {
-//
-//        System.out.println("page"+page+","+sortField+","+sortDirection+","+search);
-//        Page<EmployeeDto> employeesPage = employeeService.getAllEmployees(page, size, sortField, sortDirection, search);
-//        return ResponseEntity.status(HttpStatus.OK).body(employeesPage);
-//    }
-
     @GetMapping("/home")
     public ResponseEntity<?> getEmployees() {
         System.out.println("home");

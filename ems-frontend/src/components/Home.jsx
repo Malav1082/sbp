@@ -15,7 +15,7 @@ const Home = () => {
   const [sortField, setSortField] = useState("empName");
   const [sortDirection, setSortDirection] = useState("asc");
   const [search, setSearch] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // Success message state
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -202,7 +202,7 @@ const Home = () => {
           {successMessage}
         </Alert>
       )}
-      <div className="d-flex justify-content-between align-items-center w-100" style={{ padding: '0 30px', marginBottom: '10px' }}>
+      <div className="d-flex justify-content-between align-items-center w-100" style={{ padding: '0 30px', marginBottom: '10px'}}>
         <Input
           type="text"
           placeholder="Search"

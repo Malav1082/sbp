@@ -64,8 +64,5 @@ public class TblUserMasterService {
             return null;
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c98fb94f45022fa5c43c4a15685c6935f9c852b5
+
