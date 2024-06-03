@@ -9,7 +9,7 @@ import "../styles/background.css";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return date.toISOString().split('T')[0];
+  return date.toISOString().split("T")[0];
 };
 
 const Update = () => {
@@ -22,7 +22,7 @@ const Update = () => {
   const [user, setUser] = useState({});
   const [employeeData, setEmployeeData] = useState({
     ...employee,
-    joinedDate: formatDate(employee.joinedDate)
+    joinedDate: formatDate(employee.joinedDate),
   });
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Update = () => {
   const handleUpdate = async (values, { setSubmitting }) => {
     const data = {
       employee: values,
-      user: JSON.parse(sessionStorage.getItem("user"))
+      user: JSON.parse(sessionStorage.getItem("user")),
     };
     try {
       const response = await updateEmployee(empId, data);
@@ -70,10 +70,16 @@ const Update = () => {
       .matches(/^[A-Za-z\s]+$/, "EmpName can only contain letters and spaces"),
     designation: Yup.string()
       .required("Designation is required")
-      .matches(/^[A-Za-z\s]+$/, "Designation can only contain letters and spaces"),
+      .matches(
+        /^[A-Za-z\s]+$/,
+        "Designation can only contain letters and spaces"
+      ),
     department: Yup.string()
       .required("Department is required")
-      .matches(/^[A-Za-z\s]+$/, "Department can only contain letters and spaces"),
+      .matches(
+        /^[A-Za-z\s]+$/,
+        "Department can only contain letters and spaces"
+      ),
     joinedDate: Yup.date().required("Joined Date is required"),
     salary: Yup.number()
       .typeError("Salary must be a number")
@@ -88,7 +94,7 @@ const Update = () => {
       .matches(/^[A-Za-z\s]+$/, "State can only contain letters and spaces"),
     country: Yup.string()
       .required("Country is required")
-      .matches(/^[A-Za-z\s]+$/, "Country can only contain letters and spaces")
+      .matches(/^[A-Za-z\s]+$/, "Country can only contain letters and spaces"),
   });
 
   const getInputClass = (touched, error) => {
@@ -109,12 +115,21 @@ const Update = () => {
         validationSchema={validationSchema}
         onSubmit={handleUpdate}
       >
-        {({ isSubmitting, handleSubmit, handleChange, values, touched, errors }) => (
+        {({
+          isSubmitting,
+          handleSubmit,
+          handleChange,
+          values,
+          touched,
+          errors,
+        }) => (
           <Form onSubmit={handleSubmit}>
             <Row>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="empId" className="add-update">EmpID</Label>
+                  <Label for="empId" className="add-update">
+                    EmpID
+                  </Label>
                   <Input
                     type="text"
                     name="empId"
@@ -125,12 +140,18 @@ const Update = () => {
                     disabled // Prevent editing of empId
                     className={getInputClass(touched.empId, errors.empId)}
                   />
-                  <ErrorMessage name="empId" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="empId"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="empName" className="add-update">EmpName</Label>
+                  <Label for="empName" className="add-update">
+                    EmpName
+                  </Label>
                   <Input
                     type="text"
                     name="empName"
@@ -140,12 +161,18 @@ const Update = () => {
                     value={values.empName}
                     className={getInputClass(touched.empName, errors.empName)}
                   />
-                  <ErrorMessage name="empName" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="empName"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="designation" className="add-update">Designation</Label>
+                  <Label for="designation" className="add-update">
+                    Designation
+                  </Label>
                   <Input
                     type="text"
                     name="designation"
@@ -153,16 +180,25 @@ const Update = () => {
                     placeholder="Enter Designation"
                     onChange={handleChange}
                     value={values.designation}
-                    className={getInputClass(touched.designation, errors.designation)}
+                    className={getInputClass(
+                      touched.designation,
+                      errors.designation
+                    )}
                   />
-                  <ErrorMessage name="designation" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="designation"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
             </Row>
             <Row>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="department" className="add-update">Department</Label>
+                  <Label for="department" className="add-update">
+                    Department
+                  </Label>
                   <Input
                     type="text"
                     name="department"
@@ -170,28 +206,46 @@ const Update = () => {
                     placeholder="Enter Department"
                     onChange={handleChange}
                     value={values.department}
-                    className={getInputClass(touched.department, errors.department)}
+                    className={getInputClass(
+                      touched.department,
+                      errors.department
+                    )}
                   />
-                  <ErrorMessage name="department" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="department"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="joinedDate" className="add-update">Joined Date</Label>
+                  <Label for="joinedDate" className="add-update">
+                    Joined Date
+                  </Label>
                   <Input
                     type="date"
                     name="joinedDate"
                     id="joinedDate"
                     onChange={handleChange}
                     value={values.joinedDate}
-                    className={getInputClass(touched.joinedDate, errors.joinedDate)}
+                    className={getInputClass(
+                      touched.joinedDate,
+                      errors.joinedDate
+                    )}
                   />
-                  <ErrorMessage name="joinedDate" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="joinedDate"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="salary" className="add-update">Salary</Label>
+                  <Label for="salary" className="add-update">
+                    Salary
+                  </Label>
                   <Input
                     type="number"
                     name="salary"
@@ -201,7 +255,11 @@ const Update = () => {
                     value={values.salary}
                     className={getInputClass(touched.salary, errors.salary)}
                   />
-                  <ErrorMessage name="salary" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="salary"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -237,10 +295,50 @@ const Update = () => {
                 </FormGroup>
               </Col>
             </Row>
+            <FormGroup>
+              <Label for="addr1" className="add-update">
+                AddressLine1
+              </Label>
+              <Input
+                type="text"
+                name="addr1"
+                id="addr1"
+                placeholder="Enter AddressLine1"
+                onChange={handleChange}
+                value={values.addr1}
+                className={getInputClass(touched.addr1, errors.addr1)}
+              />
+              <ErrorMessage
+                name="addr1"
+                component="div"
+                className="text-danger"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="addr2" className="add-update">
+                AddressLine2
+              </Label>
+              <Input
+                type="text"
+                name="addr2"
+                id="addr2"
+                placeholder="Enter AddressLine2"
+                onChange={handleChange}
+                value={values.addr2}
+                className={getInputClass(touched.addr2, errors.addr2)}
+              />
+              <ErrorMessage
+                name="addr2"
+                component="div"
+                className="text-danger"
+              />
+            </FormGroup>
             <Row>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="city" className="add-update">City</Label>
+                  <Label for="city" className="add-update">
+                    City
+                  </Label>
                   <Input
                     type="text"
                     name="city"
@@ -250,12 +348,18 @@ const Update = () => {
                     value={values.city}
                     className={getInputClass(touched.city, errors.city)}
                   />
-                  <ErrorMessage name="city" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="city"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="state" className="add-update">State</Label>
+                  <Label for="state" className="add-update">
+                    State
+                  </Label>
                   <Input
                     type="text"
                     name="state"
@@ -265,12 +369,18 @@ const Update = () => {
                     value={values.state}
                     className={getInputClass(touched.state, errors.state)}
                   />
-                  <ErrorMessage name="state" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="state"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="country" className="add-update">Country</Label>
+                  <Label for="country" className="add-update">
+                    Country
+                  </Label>
                   <Input
                     type="text"
                     name="country"
@@ -280,14 +390,30 @@ const Update = () => {
                     value={values.country}
                     className={getInputClass(touched.country, errors.country)}
                   />
-                  <ErrorMessage name="country" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="country"
+                    component="div"
+                    className="text-danger"
+                  />
                 </FormGroup>
               </Col>
             </Row>
             <Button color="primary" type="submit" disabled={isSubmitting} style={{ marginBottom: '60px' }}>
               {isSubmitting ? "Updating..." : "Update"}
             </Button>
-            <Button color="danger" onClick={handleGoBack} style={{ marginBottom: '60px', marginLeft: '10px' }}>
+            <Button
+              color="primary"
+              type="submit"
+              disabled={isSubmitting}
+              style={{ marginBottom: "60px" }}
+            >
+              {isSubmitting ? "Updating..." : "Update"}
+            </Button>
+            <Button
+              color="danger"
+              onClick={handleGoBack}
+              style={{ marginBottom: "60px", marginLeft: "10px" }}
+            >
               Back
             </Button>
           </Form>

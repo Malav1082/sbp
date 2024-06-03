@@ -77,4 +77,8 @@ public class TblUserMasterController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c98fb94f45022fa5c43c4a15685c6935f9c852b5

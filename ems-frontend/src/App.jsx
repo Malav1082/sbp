@@ -8,7 +8,7 @@ import Home from "./components/Home";
 import FooterComponent from './components/FooterComponent';
 import HeaderComponent from './components/HeaderComponent';
 import Add from "./components/Add";
-import Update from "./components/update";
+import Update from "./components/Update";
 import WelcomePage from "./components/Welcome";
 import EditProfile from "./components/EditProfile";
 
