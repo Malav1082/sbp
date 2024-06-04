@@ -295,44 +295,6 @@ const Update = () => {
                 </FormGroup>
               </Col>
             </Row>
-            <FormGroup>
-              <Label for="addr1" className="add-update">
-                AddressLine1
-              </Label>
-              <Input
-                type="text"
-                name="addr1"
-                id="addr1"
-                placeholder="Enter AddressLine1"
-                onChange={handleChange}
-                value={values.addr1}
-                className={getInputClass(touched.addr1, errors.addr1)}
-              />
-              <ErrorMessage
-                name="addr1"
-                component="div"
-                className="text-danger"
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="addr2" className="add-update">
-                AddressLine2
-              </Label>
-              <Input
-                type="text"
-                name="addr2"
-                id="addr2"
-                placeholder="Enter AddressLine2"
-                onChange={handleChange}
-                value={values.addr2}
-                className={getInputClass(touched.addr2, errors.addr2)}
-              />
-              <ErrorMessage
-                name="addr2"
-                component="div"
-                className="text-danger"
-              />
-            </FormGroup>
             <Row>
               <Col md={4}>
                 <FormGroup>
@@ -399,14 +361,6 @@ const Update = () => {
               </Col>
             </Row>
             <Button color="primary" type="submit" disabled={isSubmitting} style={{ marginBottom: '60px' }}>
-              {isSubmitting ? "Updating..." : "Update"}
-            </Button>
-            <Button
-              color="primary"
-              type="submit"
-              disabled={isSubmitting}
-              style={{ marginBottom: "60px" }}
-            >
               {isSubmitting ? "Updating..." : "Update"}
             </Button>
             <Button

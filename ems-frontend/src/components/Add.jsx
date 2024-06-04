@@ -229,32 +229,6 @@ const Add = () => {
                 </FormGroup>
               </Col>
             </Row>
-            <FormGroup>
-              <Label for="addr1" className='add-update'>AddressLine1</Label>
-              <Input
-                type="text"
-                name="addr1"
-                id="addr1"
-                placeholder="Enter AddressLine1"
-                value={values.addr1}
-                onChange={handleChange}
-                className={`add-update-input ${getInputClass(touched.addr1, errors.addr1)}`}
-              />
-              <ErrorMessage name="addr1" component="div" className="text-danger" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="addr2" className='add-update'>AddressLine2</Label>
-              <Input
-                type="text"
-                name="addr2"
-                id="addr2"
-                placeholder="Enter AddressLine2"
-                value={values.addr2}
-                onChange={handleChange}
-                className={`add-update-input ${getInputClass(touched.addr2, errors.addr2)}`}
-              />
-              <ErrorMessage name="addr2" component="div" className="text-danger" />
-            </FormGroup>
             <Row>
               <Col md={4}>
                 <FormGroup>

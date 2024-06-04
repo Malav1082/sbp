@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { Button, Input, Alert } from "reactstrap";
+import { Button, Input, Alert, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import { getEmployees, deleteEmployee } from "../services/UserService";
 import "../styles/background.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -15,7 +15,9 @@ const Home = () => {
   const [sortField, setSortField] = useState("empName");
   const [sortDirection, setSortDirection] = useState("asc");
   const [search, setSearch] = useState("");
+  const [selectedField, setSelectedField] = useState("all");
   const [successMessage, setSuccessMessage] = useState("");
+  const [dropdownOpen, setDropDownOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,8 +39,12 @@ const Home = () => {
   const handleSearchChange = (event) => {
     const value = event.target.value.toLowerCase();
     setSearch(value);
-    filterAndSortEmployees(value, sortField, sortDirection);
+    filterAndSortEmployees(value, selectedField, sortField, sortDirection);
     setPage(1);
+  };
+
+  const handleDropdownChange = (field) => {
+    setSelectedField(field);
   };
 
   const handleSort = (column, sortDirection) => {
@@ -47,11 +53,15 @@ const Home = () => {
     filterAndSortEmployees(search, column.sortField, sortDirection);
   };
 
-  const filterAndSortEmployees = (search, sortField, sortDirection) => {
+  const filterAndSortEmployees = (search, selectedField, sortField, sortDirection) => {
     let filtered = employees.filter(employee => {
-      return Object.keys(employee).some(key =>
-        employee[key].toString().toLowerCase().includes(search)
-      );
+      if (selectedField === "all") {
+        return Object.keys(employee).some(key =>
+          employee[key].toString().toLowerCase().includes(search)
+        );
+      } else {
+        return employee[selectedField].toString().toLowerCase().includes(search);
+      }
     });
 
     const sorted = filtered.sort((a, b) => {
@@ -104,6 +114,21 @@ const Home = () => {
     } catch (error) {
       console.error("Error deleting employee:", error);
     }
+  };
+
+  const fieldDisplayNames = {
+    all: "All Fields",
+    empId: "EmpID",
+    empName: "EmpName",
+    designation: "Designation",
+    department: "Department",
+    joinedDate: "Joined Date",
+    salary: "Salary",
+    addr1: "AddressLine1",
+    addr2: "AddressLine2",
+    city: "City",
+    state: "State",
+    country: "Country",
   };
 
   const columns = [
@@ -203,13 +228,27 @@ const Home = () => {
         </Alert>
       )}
       <div className="d-flex justify-content-between align-items-center w-100" style={{ padding: '0 30px', marginBottom: '10px'}}>
-        <Input
-          type="text"
-          placeholder="Search"
-          value={search}
-          onChange={handleSearchChange}
-          style={{ width: "300px" }}
-        />
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <Input
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={handleSearchChange}
+            style={{ width: "300px", marginRight: "5px" }}
+          />
+          <Dropdown isOpen={dropdownOpen} toggle={() => setDropDownOpen(!dropdownOpen)}>
+            <DropdownToggle caret style={{ backgroundColor: "white", color: "black" }}>
+              {fieldDisplayNames[selectedField]}
+            </DropdownToggle>
+            <DropdownMenu>
+              {Object.keys(fieldDisplayNames).map((field) => (
+                <DropdownItem key={field} onClick={() => handleDropdownChange(field)}>
+                  {fieldDisplayNames[field]}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+        </div>
         <Button
           color="success"
           onClick={handleAddEmployee}
