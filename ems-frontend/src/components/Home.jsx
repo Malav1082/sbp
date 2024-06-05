@@ -36,35 +36,8 @@ const Home = () => {
     }
   };
 
-  const handleSearchChange = (event) => {
-    const value = event.target.value.toLowerCase();
-    setSearch(value);
-    filterAndSortEmployees(value, selectedField, sortField, sortDirection);
-    setPage(1);
-  };
-
-  const handleDropdownChange = (field) => {
-    setSelectedField(field);
-  };
-
-  const handleSort = (column, sortDirection) => {
-    setSortField(column.sortField);
-    setSortDirection(sortDirection);
-    filterAndSortEmployees(search, column.sortField, sortDirection);
-  };
-
-  const filterAndSortEmployees = (search, selectedField, sortField, sortDirection) => {
-    let filtered = employees.filter(employee => {
-      if (selectedField === "all") {
-        return Object.keys(employee).some(key =>
-          employee[key].toString().toLowerCase().includes(search)
-        );
-      } else {
-        return employee[selectedField].toString().toLowerCase().includes(search);
-      }
-    });
-
-    const sorted = filtered.sort((a, b) => {
+  const sortEmployees = (employees, sortField, sortDirection) => {
+    return [...employees].sort((a, b) => {
       if (a[sortField] < b[sortField]) {
         return sortDirection === 'asc' ? -1 : 1;
       }
@@ -73,9 +46,53 @@ const Home = () => {
       }
       return 0;
     });
+  };
 
-    setFilteredEmployees(sorted);
-    setTotalRows(sorted.length);
+  const searchEmployees = (employees, search, selectedField) => {
+    if (!search) {
+      return employees;
+    }
+
+    return employees.filter(employee => {
+      if (selectedField === "all") {
+        return Object.values(employee).some(value =>
+          value.toString().toLowerCase().includes(search.toLowerCase())
+        );
+      } else {
+        return employee[selectedField].toString().toLowerCase().includes(search.toLowerCase());
+      }
+    });
+  };
+
+  const sortAndSearchEmployees = async (page, size, sortField, sortDirection, search, selectedField) => {
+    try {
+      let sortedEmployees = sortEmployees(employees, sortField, sortDirection);
+      let sortedAndSearchedEmployees = searchEmployees(sortedEmployees, search, selectedField);
+
+      return sortedAndSearchedEmployees;
+    } catch (error) {
+      console.error('Error sorting and searching employees:', error);
+      throw error;
+    }
+  };
+
+  const handleSelectedFieldChange = (field) => {
+    setSelectedField(field);
+    setSearch(""); // Reset search input when changing the field
+  };
+
+  const handleSearchChange = async (event) => {
+    const value = event.target.value;
+    setSearch(value);
+    const sortedAndSearchedData = await sortAndSearchEmployees(page, pageSize, sortField, sortDirection, value, selectedField);
+    setFilteredEmployees(sortedAndSearchedData);
+  };
+
+  const handleSort = async (column, sortDirection) => {
+    setSortField(column.sortField);
+    setSortDirection(sortDirection);
+    const sortedAndSearchedData = await sortAndSearchEmployees(page, pageSize, column.sortField, sortDirection, search, selectedField);
+    setFilteredEmployees(sortedAndSearchedData);
   };
 
   const handlePageChange = (page) => {
@@ -110,7 +127,7 @@ const Home = () => {
       await deleteEmployee(employeeId);
       fetchEmployees();
       setSuccessMessage("Employee deleted successfully!");
-      setTimeout(() => setSuccessMessage(""), 2000); // Hide success message after 2 seconds
+      setTimeout(() => setSuccessMessage(""), 2000); 
     } catch (error) {
       console.error("Error deleting employee:", error);
     }
@@ -242,7 +259,7 @@ const Home = () => {
             </DropdownToggle>
             <DropdownMenu>
               {Object.keys(fieldDisplayNames).map((field) => (
-                <DropdownItem key={field} onClick={() => handleDropdownChange(field)}>
+                <DropdownItem key={field} onClick={() => handleSelectedFieldChange(field)}>
                   {fieldDisplayNames[field]}
                 </DropdownItem>
               ))}
@@ -271,13 +288,14 @@ const Home = () => {
           customStyles={{
             headCells: {
               style: {
-                backgroundColor: '#f1f1f1',
+                backgroundColor: 'black',
+                color: '#FFFFFF',
                 fontWeight: 'bold',
               },
             },
             cells: {
               style: {
-                backgroundColor: '#fafafa',
+                backgroundColor: 'white',
               },
             },
           }}

@@ -46,7 +46,7 @@ const HeaderComponent = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light fixed-top custom-navbar">
       <div className="container-fluid">
-        <button
+        <button style={{color : 'blue' , backgroundColor: 'white'}}
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"

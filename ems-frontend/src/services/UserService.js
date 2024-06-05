@@ -73,7 +73,6 @@ export const getEmployees = async (page, size, sortField, sortDirection, search)
   }
 };
 
-
 // Add a new employee
 export const addEmployee = async (data) => {
   try {
