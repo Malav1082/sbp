@@ -22,18 +22,39 @@ const Home = () => {
 
   useEffect(() => {
     document.title = "Home";
-    fetchEmployees();
-  }, []);
+    let isMounted = true;
+    fetchEmployees().then(() => {
+      if (isMounted) {
+        console.log("Data fetched successfully");
+      }
+    });
+
+    return () => {
+      isMounted = false; // Cleanup function to avoid setting state if the component is unmounted
+    };
+  }, [page, pageSize]);
 
   const fetchEmployees = async () => {
     try {
-      const data = await getEmployees();
-      setEmployees(data);
-      setFilteredEmployees(data);
-      setTotalRows(data.length);
+      const data = await getEmployees(page - 1, pageSize);
+      console.log("Data received from backend:", data);
+      setEmployees(data.content);
+      setFilteredEmployees(data.content);
+      setTotalRows(data.totalElements);
     } catch (error) {
       console.error("Error fetching employees:", error);
     }
+  };
+
+  const handlePageChange = (page) => {
+    console.log("Changing to page:", page);
+    setPage(page);
+  };
+
+  const handlePerRowsChange = async (newPageSize, page) => {
+    console.log("Changing page size to:", newPageSize, "Page:", page);
+    setPageSize(newPageSize);
+    setPage(1);
   };
 
   const sortEmployees = (employees, sortField, sortDirection) => {
@@ -64,16 +85,11 @@ const Home = () => {
     });
   };
 
-  const sortAndSearchEmployees = async (page, size, sortField, sortDirection, search, selectedField) => {
-    try {
-      let sortedEmployees = sortEmployees(employees, sortField, sortDirection);
-      let sortedAndSearchedEmployees = searchEmployees(sortedEmployees, search, selectedField);
-
-      return sortedAndSearchedEmployees;
-    } catch (error) {
-      console.error('Error sorting and searching employees:', error);
-      throw error;
-    }
+  const sortAndSearchEmployees = (employees, sortField, sortDirection, search, selectedField) => {
+    let sortedEmployees = sortEmployees(employees, sortField, sortDirection);
+    let sortedAndSearchedEmployees = searchEmployees(sortedEmployees, search, selectedField);
+    console.log("Sorted and searched employees:", sortedAndSearchedEmployees);
+    return sortedAndSearchedEmployees;
   };
 
   const handleSelectedFieldChange = (field) => {
@@ -81,27 +97,18 @@ const Home = () => {
     setSearch(""); // Reset search input when changing the field
   };
 
-  const handleSearchChange = async (event) => {
+  const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearch(value);
-    const sortedAndSearchedData = await sortAndSearchEmployees(page, pageSize, sortField, sortDirection, value, selectedField);
+    const sortedAndSearchedData = sortAndSearchEmployees(employees, sortField, sortDirection, value, selectedField);
     setFilteredEmployees(sortedAndSearchedData);
   };
 
-  const handleSort = async (column, sortDirection) => {
+  const handleSort = (column, sortDirection) => {
     setSortField(column.sortField);
     setSortDirection(sortDirection);
-    const sortedAndSearchedData = await sortAndSearchEmployees(page, pageSize, column.sortField, sortDirection, search, selectedField);
+    const sortedAndSearchedData = sortAndSearchEmployees(employees, column.sortField, sortDirection, search, selectedField);
     setFilteredEmployees(sortedAndSearchedData);
-  };
-
-  const handlePageChange = (page) => {
-    setPage(page);
-  };
-
-  const handlePerRowsChange = async (newPageSize, page) => {
-    setPageSize(newPageSize);
-    setPage(page);
   };
 
   const handleAddEmployee = () => {
@@ -232,7 +239,8 @@ const Home = () => {
     },
   ];
 
-  const paginatedEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
+  // const paginatedEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
+  // console.log("Paginated Employees:", paginatedEmployees);
 
   return (
     <div className="home-container mt-5 d-flex flex-column align-items-center" style={{ marginBottom: "100px" }}>
@@ -276,7 +284,9 @@ const Home = () => {
       <div style={{}}>
         <DataTable
           columns={columns}
-          data={paginatedEmployees}
+          data={filteredEmployees}
+          fixedHeader
+          fixedHeaderScrollHeight="300px"
           pagination
           paginationServer
           paginationTotalRows={totalRows}
@@ -289,13 +299,14 @@ const Home = () => {
             headCells: {
               style: {
                 backgroundColor: 'black',
-                color: '#FFFFFF',
+                color: 'white',
                 fontWeight: 'bold',
               },
             },
             cells: {
               style: {
-                backgroundColor: 'white',
+                backgroundImage: '',
+                color: 'black',
               },
             },
           }}

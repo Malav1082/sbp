@@ -8,6 +8,8 @@ import net.javaguides.ems.entity.TblUserMaster;
 import net.javaguides.ems.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +25,23 @@ public class EmployeeController {
     @Autowired
     private ObjectMapper objectMapper;
 
+//    @GetMapping("/home")
+//    public ResponseEntity<?> getEmployees() {
+//        System.out.println("home");
+//        List<EmployeeDto> employees = employeeService.getAllEmployees();
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body((employees != null) ? employees : "null");
+//    }
+
     @GetMapping("/home")
-    public ResponseEntity<?> getEmployees() {
-        System.out.println("home");
-        List<EmployeeDto> employees = employeeService.getAllEmployees();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body((employees != null) ? employees : "null");
+    public ResponseEntity<?> getEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<EmployeeDto> employeesPage = employeeService.getAllEmployees(page, size);
+        System.out.println(" page " +page + " size " +size);
+        return ResponseEntity.status(HttpStatus.OK).body(employeesPage);
     }
 
     @PostMapping("/home/add")

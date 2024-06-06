@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TblEmployeeMasterRepository extends JpaRepository<TblEmployeeMaster, Long> {
     TblEmployeeMaster findByEmpId(String empId);
-
     boolean existsByEmpId(String empId);
+    Page<TblEmployeeMaster> findAll(Pageable pageable);
 }

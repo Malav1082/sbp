@@ -137,7 +137,7 @@ const Update = () => {
                     placeholder="Enter EmpID"
                     onChange={handleChange}
                     value={values.empId}
-                    disabled // Prevent editing of empId
+                    disabled
                     className={getInputClass(touched.empId, errors.empId)}
                   />
                   <ErrorMessage

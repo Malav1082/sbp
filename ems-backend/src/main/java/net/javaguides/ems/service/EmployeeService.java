@@ -8,6 +8,9 @@ import net.javaguides.ems.repository.TblEmployeeDetailRepository;
 import net.javaguides.ems.repository.TblEmployeeMasterRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,18 +63,28 @@ public class EmployeeService {
         return ed;
     }
 
-    public List<EmployeeDto> getAllEmployees() {
-        return employeeMasterRepository
-                .findAll()
-                .stream()
-                .map(master -> {
-                    TblEmployeeDetail detail = employeeDetailRepository
-                            .findById(master.getMastCode())
-                            .orElse(null);
-                    EmployeeDto dto =convertToDto(master, detail);
-                    return dto;
-                })
-                .collect(Collectors.toList());
+//    public List<EmployeeDto> getAllEmployees() {
+//        return employeeMasterRepository
+//                .findAll()
+//                .stream()
+//                .map(master -> {
+//                    TblEmployeeDetail detail = employeeDetailRepository
+//                            .findById(master.getMastCode())
+//                            .orElse(null);
+//                    EmployeeDto dto =convertToDto(master, detail);
+//                    return dto;
+//                })
+//                .collect(Collectors.toList());
+//    }
+
+    public Page<EmployeeDto> getAllEmployees(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TblEmployeeMaster> employeePage = employeeMasterRepository.findAll(pageable);
+
+        return employeePage.map(master -> {
+            TblEmployeeDetail detail = employeeDetailRepository.findById(master.getMastCode()).orElse(null);
+            return convertToDto(master, detail);
+        });
     }
 
     public void deleteEmp(String empId) {

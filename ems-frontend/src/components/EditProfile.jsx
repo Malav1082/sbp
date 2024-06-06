@@ -73,6 +73,7 @@ const EditProfile = () => {
                                         id="name"
                                         name="name"
                                         onChange={handleChange}
+                                        disabled
                                         value={values.name}
                                         invalid={errors.name && touched.name}
                                     />

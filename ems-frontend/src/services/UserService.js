@@ -55,21 +55,33 @@ export const putApi = async (url, data, succ, err) => {
   }
 };
 
-export const getEmployees = async (page, size, sortField, sortDirection, search) => {
+// export const getEmployees = async (page, size, sortField, sortDirection, search) => {
+//   try {
+//     const response = await axios.get(base_url + "/home", {
+//       params: {
+//         page,
+//         size,
+//         sortField,
+//         sortDirection,
+//         search,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error fetching employees:', error);
+//     throw error;
+//   }
+// };
+
+export const getEmployees = async (page = 0, size = 10) => {
   try {
-    const response = await axios.get(base_url + "/home", {
-      params: {
-        page,
-        size,
-        sortField,
-        sortDirection,
-        search,
-      },
-    });
-    return response.data;
+      const response = await axios.get(base_url + "/home", {
+          params: { page, size },
+      });
+      return response.data;
   } catch (error) {
-    console.error('Error fetching employees:', error);
-    throw error;
+      console.error('Error fetching employees:', error);
+      throw error;
   }
 };
 
