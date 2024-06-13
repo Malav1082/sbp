@@ -3,14 +3,26 @@ import { toast } from "react-toastify";
 
 const base_url = "http://localhost:8080";
 
+// Add Axios request interceptor to set Authorization header
+axios.interceptors.request.use(
+  (config) => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user) {
+      config.headers.Authorization = "Basic " + btoa(user.name + ":" + user.password);
+      console.log("config2", config.headers);
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // POST request handler
 export const postApi = async (url, data, succ, err) => {
   try {
-    const response = await axios.post(base_url + url, data, {
-      headers: {
-        Authorization: "Basic " +btoa("name:password")
-      }
-    });
+    console.log("data",data);
+    const response = await axios.post(base_url + url, data);
     toast.success(succ, { position: "top-center" });
     return response;
   } catch (error) {
@@ -58,24 +70,6 @@ export const putApi = async (url, data, succ, err) => {
     }
   }
 };
-
-// export const getEmployees = async (page, size, sortField, sortDirection, search) => {
-//   try {
-//     const response = await axios.get(base_url + "/home", {
-//       params: {
-//         page,
-//         size,
-//         sortField,
-//         sortDirection,
-//         search,
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching employees:', error);
-//     throw error;
-//   }
-// };
 
 export const getEmployees = async (page = 0, size = 10) => {
   try {

@@ -26,6 +26,7 @@ const Login = () => {
     try {
       setLoggingIn(true); // Display "Logging in..." message
       const response = await postApi("/login", values, "Login Successful!", "Invalid Credentials");
+      console.log(response)
       if (response && response.status === 200) {
         sessionStorage.setItem("user", JSON.stringify(response.data));
         setSubmitting(false);

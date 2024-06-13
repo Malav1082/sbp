@@ -1,5 +1,6 @@
 package net.javaguides.ems.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,23 +15,26 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private NamePasswordAuth namePasswordAuth;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("1");
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/reset-password", "/forgot-password", "/home", "/home/add", "/home/delete/**", "/home/update/**")
+                        .requestMatchers("/register", "/login", "/reset-password", "/forgot-password")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
-                )
-                .httpBasic(withDefaults())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                );
+                ).authenticationProvider(namePasswordAuth)
+                .httpBasic(withDefaults());
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout")
+//                        .permitAll()
+//                );
         return http.build();
     }
 
