@@ -45,35 +45,35 @@ public class EmployeeController {
     }
 
     @PostMapping("/home/add")
-    public ResponseEntity<?> addEmployee(@RequestBody JsonNode eud) {
+    public ResponseEntity<?> addEmployee(@RequestBody EmployeeUserDto employeeUserDto) {
         System.out.println("add");
         try {
-            if (eud.has("employee") && eud.has("user")) {
-                EmployeeDto employeeDTO = objectMapper.treeToValue(eud.get("employee"), EmployeeDto.class);
-                System.out.println("eud" + eud);
-                TblUserMaster user = objectMapper.treeToValue(eud.get("user"), TblUserMaster.class);
+//            if (eud.has("employee") && eud.has("user")) {
+//                EmployeeDto employeeDTO = objectMapper.treeToValue(eud.get("employee"), EmployeeDto.class);
+//                System.out.println("eud" + eud);
+//                TblUserMaster user = objectMapper.treeToValue(eud.get("user"), TblUserMaster.class);
 
-                if (employeeDTO == null) {
-                    System.out.println("ed null");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Employee data is missing");
-                }
-                if (user == null) {
-                    System.out.println("u null");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User data is missing");
-                }
+            EmployeeDto employeeDTO = employeeUserDto.getEmployee();
+//            TblUserMaster user = employeeUserDto.getUser();
 
-                EmployeeDto addedEmployee = employeeService.addEmp(employeeDTO, user);
-                if (addedEmployee != null) {
-                    return ResponseEntity
-                            .status(HttpStatus.CREATED)
-                            .body("Employee with emp ID " + addedEmployee.getEmpId() + " added successfully!");
-                } else {
-                    return ResponseEntity
-                            .status(HttpStatus.BAD_REQUEST)
-                            .body("Insertion Failed!");
-                }
+            if (employeeDTO == null) {
+                System.out.println("ed null");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Employee data is missing");
+            }
+//                if (user == null) {
+//                    System.out.println("u null");
+//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User data is missing");
+//                }
+
+            EmployeeDto addedEmployee = employeeService.addEmp(employeeDTO);
+            if (addedEmployee != null) {
+                return ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body("Employee with emp ID " + addedEmployee.getEmpId() + " added successfully!");
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JSON structure");
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body("Insertion Failed!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,9 +92,9 @@ public class EmployeeController {
         System.out.println("employeeUserDTO" + employeeUserDTO);
         try {
             EmployeeDto e = employeeUserDTO.getEmployee();
-            TblUserMaster u = employeeUserDTO.getUser();
-            System.out.println("user" + u);
-            if (employeeService.updateEmp(e, u) != null) {
+//            TblUserMaster u = employeeUserDTO.getUser();
+//            System.out.println("user" + u);
+            if (employeeService.updateEmp(e) != null) {
                 return ResponseEntity
                         .status(HttpStatus.OK)
                         .body(

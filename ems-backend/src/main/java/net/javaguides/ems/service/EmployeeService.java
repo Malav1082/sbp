@@ -31,16 +31,16 @@ public class EmployeeService {
         return employeeMasterRepository.existsByEmpId(empId);
     }
 
-    public EmployeeDto addEmp(EmployeeDto ed, TblUserMaster user) {
+    public EmployeeDto addEmp(EmployeeDto ed) {
         if (ed == null) {
             throw new IllegalArgumentException("EmployeeDto must not be null");
         }
-        if (user == null) {
-            throw new IllegalArgumentException("User master must not be null");
-        }
+//        if (user == null) {
+//            throw new IllegalArgumentException("User master must not be null");
+//        }
 
         System.out.println("Adding Employee: " + ed);
-        System.out.println("With User: " + user);
+//        System.out.println("With User: " + user);
 
         // Check if empId already exists
         if (isEmpIdExists(ed.getEmpId())) {
@@ -48,7 +48,7 @@ public class EmployeeService {
         }
 
         TblEmployeeMaster tblEmployeeMaster = modelMapper.map(ed, TblEmployeeMaster.class);
-        tblEmployeeMaster.setTblUserMaster(user);
+//        tblEmployeeMaster.setTblUserMaster(user);
         TblEmployeeMaster savedMaster = employeeMasterRepository.save(tblEmployeeMaster);
         System.out.println(savedMaster);
 
@@ -98,13 +98,13 @@ public class EmployeeService {
         }
     }
 
-    public EmployeeDto updateEmp(EmployeeDto ed, TblUserMaster user) {
+    public EmployeeDto updateEmp(EmployeeDto ed) {
         System.out.println("ed" +ed);
-        System.out.println("user" +user);
+//        System.out.println("user" +user);
 
         TblEmployeeMaster currempmast = employeeMasterRepository.findByEmpId(ed.getEmpId());
         modelMapper.map(ed, currempmast);
-        currempmast.setTblUserMaster(user);
+//        currempmast.setTblUserMaster(user);
         TblEmployeeMaster savedMaster = employeeMasterRepository.save(currempmast);
 
         TblEmployeeDetail currempdet = employeeDetailRepository.findByEmpCode(

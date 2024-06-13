@@ -6,7 +6,11 @@ const base_url = "http://localhost:8080";
 // POST request handler
 export const postApi = async (url, data, succ, err) => {
   try {
-    const response = await axios.post(base_url + url, data);
+    const response = await axios.post(base_url + url, data, {
+      headers: {
+        Authorization: "Basic " +btoa("name:password")
+      }
+    });
     toast.success(succ, { position: "top-center" });
     return response;
   } catch (error) {
