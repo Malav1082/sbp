@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class BasicFilterAuth extends OncePerRequestFilter {
+public class BasicAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     public TblUserMasterService tblUserMasterService;
@@ -24,6 +24,7 @@ public class BasicFilterAuth extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+        System.out.println("BasicAuthFilter executing for request: " + request.getRequestURI());
         // TODO Auto-generated method stub
         String header = request.getHeader("Authorization");
 
