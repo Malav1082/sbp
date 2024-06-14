@@ -9,7 +9,7 @@ axios.interceptors.request.use(
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (user) {
       config.headers.Authorization = "Basic " + btoa(user.name + ":" + user.password);
-      console.log("config2", config.headers);
+      console.log("Auth", config.headers);
     }
     return config;
   },
