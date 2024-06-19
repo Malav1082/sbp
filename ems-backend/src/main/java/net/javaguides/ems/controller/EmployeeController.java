@@ -1,20 +1,14 @@
 package net.javaguides.ems.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.javaguides.ems.dto.EmployeeDto;
 import net.javaguides.ems.dto.EmployeeUserDto;
-import net.javaguides.ems.entity.TblUserMaster;
 import net.javaguides.ems.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class EmployeeController {
@@ -24,15 +18,6 @@ public class EmployeeController {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-//    @GetMapping("/home")
-//    public ResponseEntity<?> getEmployees() {
-//        System.out.println("home");
-//        List<EmployeeDto> employees = employeeService.getAllEmployees();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body((employees != null) ? employees : "null");
-//    }
 
     @GetMapping("/home")
     public ResponseEntity<?> getEmployees(
@@ -48,22 +33,12 @@ public class EmployeeController {
     public ResponseEntity<?> addEmployee(@RequestBody EmployeeUserDto employeeUserDto) {
         System.out.println("add");
         try {
-//            if (eud.has("employee") && eud.has("user")) {
-//                EmployeeDto employeeDTO = objectMapper.treeToValue(eud.get("employee"), EmployeeDto.class);
-//                System.out.println("eud" + eud);
-//                TblUserMaster user = objectMapper.treeToValue(eud.get("user"), TblUserMaster.class);
-
             EmployeeDto employeeDTO = employeeUserDto.getEmployee();
-//            TblUserMaster user = employeeUserDto.getUser();
 
             if (employeeDTO == null) {
                 System.out.println("ed null");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Employee data is missing");
             }
-//                if (user == null) {
-//                    System.out.println("u null");
-//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User data is missing");
-//                }
 
             EmployeeDto addedEmployee = employeeService.addEmp(employeeDTO);
             if (addedEmployee != null) {
@@ -92,8 +67,6 @@ public class EmployeeController {
         System.out.println("employeeUserDTO" + employeeUserDTO);
         try {
             EmployeeDto e = employeeUserDTO.getEmployee();
-//            TblUserMaster u = employeeUserDTO.getUser();
-//            System.out.println("user" + u);
             if (employeeService.updateEmp(e) != null) {
                 return ResponseEntity
                         .status(HttpStatus.OK)
