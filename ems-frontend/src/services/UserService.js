@@ -6,10 +6,12 @@ const base_url = "http://localhost:8080";
 // Add Axios request interceptor to set Authorization header
 axios.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    if (user) {
-      config.headers.Authorization = "Basic " + btoa(user.name + ":" + user.password);
-      console.log("Auth", config.headers);
+    // const user = JSON.parse(sessionStorage.getItem("user"));
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      // console.log("Auth", config.headers);
+      // console.log(response.data[2])
     }
     return config;
   },

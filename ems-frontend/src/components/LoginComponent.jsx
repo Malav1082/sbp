@@ -28,13 +28,14 @@ const Login = () => {
       const response = await postApi("/login", values, "Login Successful!", "Invalid Credentials");
       console.log(response)
       if (response && response.status === 200) {
-        sessionStorage.setItem("user", JSON.stringify(response.data));
+        sessionStorage.setItem("user", JSON.stringify(response.data[1]));
         setSubmitting(false);
-        console.log(response.data.userId);
+        console.log(response.data)
+        console.log(response.data[1].userId);
         setLoginSuccess(true); // Set login success state to true
         setTimeout(() => {
           setLoginSuccess(false); // Reset login success state after 2 seconds
-          navigate(`/welcome/${response.data.userId}`);
+          navigate(`/welcome/${response.data[1].userId}`);
         }, 2000);
       } else {
         setErrors({ password: "Invalid User Name or Password" });
