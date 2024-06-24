@@ -10,6 +10,7 @@ const HeaderComponent = () => {
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = sessionStorage.getItem('token');
     if (user) {
       setUser(user);
     }
@@ -17,11 +18,14 @@ const HeaderComponent = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
     navigate('/login');
   };
 
   const handleWelcome = () => {
     const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = sessionStorage.getItem('token');
+
     if (user && user.userId) {
       navigate(`/welcome/${user.userId}`);
     } else {
@@ -31,6 +35,8 @@ const HeaderComponent = () => {
 
   const handleEmployeeData = () => {
     const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = sessionStorage.getItem('token');
+
     if (user && user.userId) {
       navigate(`/home/${user.userId}`);
     } else {
@@ -40,6 +46,7 @@ const HeaderComponent = () => {
 
   const handleEditProfile = () => {
     // Redirect to the edit profile page
+    const token = sessionStorage.getItem('token');
     navigate('/edit-profile');
   };
 

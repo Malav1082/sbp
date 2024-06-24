@@ -23,9 +23,9 @@ const Home = () => {
   useEffect(() => {
     document.title = "Home";
     let isMounted = true;
-    fetchEmployees().then(() => {
+    fetchEmployees().then((response) => {
       if (isMounted) {
-        console.log("Data fetched successfully");
+        console.log("Data fetched successfully",response);
       }
     });
 
@@ -285,6 +285,7 @@ const Home = () => {
         <DataTable
           columns={columns}
           data={filteredEmployees}
+          // data={paginatedEmployees}
           fixedHeader
           fixedHeaderScrollHeight="300px"
           pagination

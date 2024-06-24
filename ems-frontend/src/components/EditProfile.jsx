@@ -29,6 +29,7 @@ const EditProfile = () => {
             await putApi(`/edit-profile/${user.userId}`, data, 'Profile updated successfully!', 'Error updating profile');
             const updatedUser = { ...user, name: values.name, mobileNumber: values.mobileNumber };
             sessionStorage.setItem('user', JSON.stringify(updatedUser));
+            // sessionStorage.setItem('token',JSON.stringify(token));
             setUpdateSuccess(true);
             setTimeout(() => {
                 setUpdateSuccess(false);

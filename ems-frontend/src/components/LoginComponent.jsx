@@ -29,6 +29,7 @@ const Login = () => {
       console.log(response)
       if (response && response.status === 200) {
         sessionStorage.setItem("user", JSON.stringify(response.data[1]));
+        sessionStorage.setItem("token", response.data[2]);
         setSubmitting(false);
         console.log(response.data)
         console.log(response.data[1].userId);

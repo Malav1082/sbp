@@ -19,6 +19,7 @@ public class EmployeeController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/home")
     public ResponseEntity<?> getEmployees(
             @RequestParam(defaultValue = "0") int page,
@@ -29,6 +30,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(employeesPage);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/home/add")
     public ResponseEntity<?> addEmployee(@RequestBody EmployeeUserDto employeeUserDto) {
         System.out.println("add");
@@ -56,12 +58,14 @@ public class EmployeeController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/home/delete/{empId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("empId") String empId) {
         employeeService.deleteEmp(empId);
         return ResponseEntity.ok("Employee with Emp ID " + empId + " deleted.");
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/home/update/{empId}")
     public ResponseEntity<?> updateEmployee(@RequestBody EmployeeUserDto employeeUserDTO) {
         System.out.println("employeeUserDTO" + employeeUserDTO);

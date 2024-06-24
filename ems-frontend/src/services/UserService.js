@@ -3,15 +3,22 @@ import { toast } from "react-toastify";
 
 const base_url = "http://localhost:8080";
 
+const axiosInstance = axios.create({
+  baseURL: base_url,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+  }
+});
+
 // Add Axios request interceptor to set Authorization header
 axios.interceptors.request.use(
   (config) => {
-    // const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = sessionStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      // console.log("Auth", config.headers);
-      // console.log(response.data[2])
     }
     return config;
   },
@@ -38,27 +45,27 @@ export const postApi = async (url, data, succ, err) => {
   }
 };
 
-// GET request handler
-export const getApi = async (url, succ, err) => {
-  try {
-    const response = await axios.get(base_url + url);
-    toast.success(succ, { position: "top-center" });
-    return response;
-  } catch (error) {
-    toast.error(err, { position: "top-center" });
-    if (error.response) {
-      return error.response;
-    } else {
-      console.error('API Error:', error);
-      throw new Error('Network error or server is down');
-    }
-  }
-};
+// // GET request handler
+// export const getApi = async (url, succ, err) => {
+//   try {
+//     const response = await axios.get(base_url + url);
+//     toast.success(succ, { position: "top-center" });
+//     return response;
+//   } catch (error) {
+//     toast.error(err, { position: "top-center" });
+//     if (error.response) {
+//       return error.response;
+//     } else {
+//       console.error('API Error:', error);
+//       throw new Error('Network error or server is down');
+//     }
+//   }
+// };
 
 // PUT request handler
 export const putApi = async (url, data, succ, err) => {
   try {
-    const response = await axios.put(base_url + url, data);
+    const response = await axiosInstance.put(base_url + url, data);
     toast.success(succ, { position: "top-center" });
     return response;
   } catch (error) {
@@ -75,9 +82,10 @@ export const putApi = async (url, data, succ, err) => {
 
 export const getEmployees = async (page = 0, size = 10) => {
   try {
-      const response = await axios.get(base_url + "/home", {
-          params: { page, size },
+      const response = await axiosInstance.get(base_url + "/home", {
+          params: { page, size }
       });
+      console.log("response",response)
       return response.data;
   } catch (error) {
       console.error('Error fetching employees:', error);
@@ -89,7 +97,7 @@ export const getEmployees = async (page = 0, size = 10) => {
 export const addEmployee = async (data) => {
   try {
     console.log("Sending data to server:", data);
-    const response = await axios.post(base_url + "/home/add", data);
+    const response = await axiosInstance.post(base_url + "/home/add", data);
     toast.success("Employee added successfully!", { position: "top-center" });
     return response.data;
   } catch (error) {
@@ -106,7 +114,7 @@ export const addEmployee = async (data) => {
 // Delete an employee
 export const deleteEmployee = async (empId) => {
   try {
-    const response = await axios.delete(`${base_url}/home/delete/${empId}`);
+    const response = await axiosInstance.delete(`${base_url}/home/delete/${empId}`);
     toast.success("Employee deleted successfully!", { position: "top-center" });
     return response.data;
   } catch (error) {
@@ -120,7 +128,7 @@ export const deleteEmployee = async (empId) => {
 export const updateEmployee = async (empId, data) => {
   try {
     console.log("data", data);
-    const response = await axios.put(`${base_url}/home/update/${empId}`, data);
+    const response = await axiosInstance.put(`${base_url}/home/update/${empId}`, data);
     toast.success("Employee updated successfully!", { position: "top-center" });
     return response; // Return the full response object
   } catch (error) {
