@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/home")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EmployeeController {
 
     @Autowired
@@ -19,8 +21,7 @@ public class EmployeeController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/home")
+    @GetMapping
     public ResponseEntity<?> getEmployees(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
@@ -30,8 +31,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(employeesPage);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/home/add")
+    @PostMapping("/add")
     public ResponseEntity<?> addEmployee(@RequestBody EmployeeUserDto employeeUserDto) {
         System.out.println("add");
         try {
@@ -58,15 +58,13 @@ public class EmployeeController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @DeleteMapping("/home/delete/{empId}")
+    @DeleteMapping("/delete/{empId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("empId") String empId) {
         employeeService.deleteEmp(empId);
         return ResponseEntity.ok("Employee with Emp ID " + empId + " deleted.");
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("/home/update/{empId}")
+    @PutMapping("/update/{empId}")
     public ResponseEntity<?> updateEmployee(@RequestBody EmployeeUserDto employeeUserDTO) {
         System.out.println("employeeUserDTO" + employeeUserDTO);
         try {
