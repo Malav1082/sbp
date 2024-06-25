@@ -10,32 +10,9 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000") // Allow requests from localhost:3000
-                .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow these methods
-                .allowedHeaders("Authorization", "Content-Type") // Allow these headers
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow these methods
+                .allowedHeaders("Authorization", "Content-Type","Access-Control-Allow-Origin") // Allow these headers
                 .exposedHeaders("Authorization") // Expose this header
                 .allowCredentials(true); // Allow credentials (cookies)
     }
 }
-
-//package net.javaguides.ems.config;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.cors.CorsConfiguration;
-//import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-//import org.springframework.web.filter.CorsFilter;
-//
-//@Configuration
-//public class CorsConfig {
-//
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.addAllowedOrigin("*"); // Allow all origins
-//        config.addAllowedHeader("*"); // Allow all headers
-//        config.addAllowedMethod("*"); // Allow all methods (GET, POST, PUT, DELETE, etc)
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
-//    }
-//}

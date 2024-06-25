@@ -8,22 +8,25 @@ const axiosInstance = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    // 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
   }
 });
 
 // Add Axios request interceptor to set Authorization header
-axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    const token = sessionStorage.getItem('token');
+    // const user = JSON.parse(sessionStorage.getItem("user"));
+    const token = sessionStorage.getItem("token");
+    // console.log("token",token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      // console.log("token1",token);
     }
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    console.log("error");
+    return Promise.reject("error",error);
   }
 );
 
@@ -31,7 +34,7 @@ axios.interceptors.request.use(
 export const postApi = async (url, data, succ, err) => {
   try {
     console.log("data",data);
-    const response = await axios.post(base_url + url, data);
+    const response = await axiosInstance.post(base_url + url, data);
     toast.success(succ, { position: "top-center" });
     return response;
   } catch (error) {
@@ -85,10 +88,13 @@ export const getEmployees = async (page = 0, size = 10) => {
       const response = await axiosInstance.get(base_url + "/home", {
           params: { page, size }
       });
+    
       console.log("response",response)
       return response.data;
   } catch (error) {
-      console.error('Error fetching employees:', error);
+      // console.error('Error fetching employees:', error);
+      // const token = sessionStorage.getItem("token");
+      console.log("token",token);
       throw error;
   }
 };

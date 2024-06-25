@@ -113,6 +113,7 @@ const Home = () => {
 
   const handleAddEmployee = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
+    // const token = sessionStorage.getItem("token");
     if (user && user.userId) {
       navigate(`/home/${user.userId}/add`);
     } else {
@@ -122,6 +123,7 @@ const Home = () => {
 
   const handleUpdate = (employee) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
+    // const token = sessionStorage.getItem("token");
     if (user && user.userId) {
       navigate(`/home/${user.userId}/update/${employee.empId}`, { state: employee });
     } else {

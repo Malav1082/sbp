@@ -6,13 +6,15 @@ import icon from "../images/icon.png"
 
 const HeaderComponent = () => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = sessionStorage.getItem('token');
-    if (user) {
+    if (user && token) {
       setUser(user);
+      setToken(token);
     }
   }, []);
 
