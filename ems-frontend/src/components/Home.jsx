@@ -23,9 +23,9 @@ const Home = () => {
   useEffect(() => {
     document.title = "Home";
     let isMounted = true;
-    fetchEmployees().then((response) => {
+    fetchEmployees().then(() => {
       if (isMounted) {
-        console.log("Data fetched successfully",response);
+        console.log("Data fetched successfully");
       }
     });
 
