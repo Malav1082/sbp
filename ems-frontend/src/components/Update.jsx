@@ -28,7 +28,9 @@ const Update = () => {
   useEffect(() => {
     document.title = "Update Employee";
 
-    const storedUser = JSON.parse(sessionStorage.getItem("user"));
+    // const storedUser = JSON.parse(sessionStorage.getItem("user"));
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
     if (storedUser) {
       setUser(storedUser);
     } else {
@@ -40,12 +42,14 @@ const Update = () => {
   const handleUpdate = async (values, { setSubmitting }) => {
     const data = {
       employee: values,
-      user: JSON.parse(sessionStorage.getItem("user")),
+      // user: JSON.parse(sessionStorage.getItem("user")),
+      user: JSON.parse(localStorage.getItem("user")),
     };
     try {
       const response = await updateEmployee(empId, data);
       if (response && response.status === 200) {
-        sessionStorage.setItem("update", JSON.stringify(response.data));
+        // sessionStorage.setItem("update", JSON.stringify(response.data));
+        localStorage.setItem("update",JSON.stringify(response.data));
         setSuccessMessage("Employee updated successfully!");
         setTimeout(() => navigate(`/home/${user.userId}`, { state: { refresh: true } }), 2000);
       } else {

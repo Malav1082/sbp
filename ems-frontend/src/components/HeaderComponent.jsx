@@ -10,7 +10,8 @@ const HeaderComponent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    // const user = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem('token');
     if (user && token) {
       setUser(user);
@@ -19,13 +20,15 @@ const HeaderComponent = () => {
   }, []);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('user');
+    // sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
     localStorage.removeItem('token');
     navigate('/login');
   };
 
   const handleWelcome = () => {
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    // const user = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     // const token = sessionStorage.getItem('token');
 
     if (user && user.userId) {
@@ -36,7 +39,8 @@ const HeaderComponent = () => {
   };
 
   const handleEmployeeData = () => {
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    // const user = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     // const token = sessionStorage.getItem('token');
 
     if (user && user.userId) {

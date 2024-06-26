@@ -10,8 +10,8 @@ const WelcomePage = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("user"));
-    // const userData = JSON.parse(localStorage.getItem("user"));
+    // const userData = JSON.parse(sessionStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
       setUser(userData);
     }

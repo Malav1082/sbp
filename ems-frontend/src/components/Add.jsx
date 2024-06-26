@@ -14,13 +14,15 @@ const Add = () => {
     try {
       const data = {
         employee: values,
-        user: JSON.parse(sessionStorage.getItem("user"))
+        // user: JSON.parse(sessionStorage.getItem("user"))
+        user: JSON.parse(localStorage.getItem("user"))
       };
       console.log("Submitting employee data:", data);
       await addEmployee(data);
       setSuccessMessage("Employee added successfully!");
       resetForm();
-      const user = JSON.parse(sessionStorage.getItem("user"));
+      // const user = JSON.parse(sessionStorage.getItem("user"));
+      const user= JSON.parse(localStorage.getItem("user"));
       if (user && user.userId) {
         setTimeout(() => navigate(`/home/${user.userId}`), 2000); // Navigate after 2 seconds
       } else {

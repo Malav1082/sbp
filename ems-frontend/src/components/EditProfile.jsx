@@ -13,7 +13,8 @@ const EditProfile = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const user = JSON.parse(sessionStorage.getItem("user"));
+        // const user = JSON.parse(sessionStorage.getItem("user"));
+        const user = JSON.parse(localStorage.getItem("user"));
         if (user) {
             setUser(user);
         }
@@ -28,7 +29,8 @@ const EditProfile = () => {
         try {
             await putApi(`/edit-profile/${user.userId}`, data, 'Profile updated successfully!', 'Error updating profile');
             const updatedUser = { ...user, name: values.name, mobileNumber: values.mobileNumber };
-            sessionStorage.setItem('user', JSON.stringify(updatedUser));
+            // sessionStorage.setItem('user', JSON.stringify(updatedUser));
+            localStorage.setItem('user',JSON.stringify(updatedUser));
             // sessionStorage.setItem('token',JSON.stringify(token));
             setUpdateSuccess(true);
             setTimeout(() => {

@@ -28,7 +28,7 @@ const Login = () => {
       const response = await postApi("/login", values, "Login Successful!", "Invalid Credentials");
       console.log(response)
       if (response && response.status === 200) {
-        sessionStorage.setItem("user", JSON.stringify(response.data[1]));
+        localStorage.setItem("user", JSON.stringify(response.data[1]));
         localStorage.setItem("token", response.data[2]);
         console.log('Token stored:', localStorage.getItem('token'));
 
