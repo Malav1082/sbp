@@ -11,7 +11,7 @@ const HeaderComponent = () => {
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (user && token) {
       setUser(user);
       setToken(token);
@@ -20,13 +20,13 @@ const HeaderComponent = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
   const handleWelcome = () => {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    const token = sessionStorage.getItem('token');
+    // const token = sessionStorage.getItem('token');
 
     if (user && user.userId) {
       navigate(`/welcome/${user.userId}`);
@@ -37,7 +37,7 @@ const HeaderComponent = () => {
 
   const handleEmployeeData = () => {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    const token = sessionStorage.getItem('token');
+    // const token = sessionStorage.getItem('token');
 
     if (user && user.userId) {
       navigate(`/home/${user.userId}`);
@@ -48,7 +48,7 @@ const HeaderComponent = () => {
 
   const handleEditProfile = () => {
     // Redirect to the edit profile page
-    const token = sessionStorage.getItem('token');
+    // const token = sessionStorage.getItem('token');
     navigate('/edit-profile');
   };
 
